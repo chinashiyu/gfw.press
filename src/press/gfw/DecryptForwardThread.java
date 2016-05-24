@@ -22,9 +22,10 @@ package press.gfw;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.sql.Timestamp;
 
 import javax.crypto.SecretKey;
+
+import org.apache.log4j.Logger;
 
 /**
  * GFW.Press解密及转发线程
@@ -33,6 +34,8 @@ import javax.crypto.SecretKey;
  *
  */
 public class DecryptForwardThread extends Thread {
+	
+	private static Logger logger = Logger.getLogger(DecryptForwardThread.class);
 
 	private static final int BUFFER_SIZE_MAX = 1024 * 768; // 缓冲区可接受的最大值，768K
 
@@ -71,19 +74,6 @@ public class DecryptForwardThread extends Thread {
 
 	}
 
-	/**
-	 * 打印信息
-	 * 
-	 * @param o
-	 */
-	@SuppressWarnings("unused")
-	private void log(Object o) {
-
-		String time = (new Timestamp(System.currentTimeMillis())).toString().substring(0, 19);
-
-		System.out.println("[" + time + "] " + o.toString());
-
-	}
 
 	/**
 	 * 解密转发
@@ -181,6 +171,8 @@ public class DecryptForwardThread extends Thread {
 			}
 
 		} catch (IOException ex) {
+			
+			logger.error("解密转发出错: ",ex);
 
 		}
 

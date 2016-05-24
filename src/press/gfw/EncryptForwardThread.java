@@ -22,9 +22,10 @@ package press.gfw;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.sql.Timestamp;
 
 import javax.crypto.SecretKey;
+
+import org.apache.log4j.Logger;
 
 /**
  * GFW.Press加密及转发线程
@@ -33,6 +34,8 @@ import javax.crypto.SecretKey;
  *
  */
 public class EncryptForwardThread extends Thread {
+	
+	private static Logger logger = Logger.getLogger(EncryptForwardThread.class);
 
 	private static final int BUFFER_SIZE_MIN = 1024 * 128; // 缓冲区最小值，128K
 
@@ -72,20 +75,6 @@ public class EncryptForwardThread extends Thread {
 		this.key = key;
 
 		aes = new Encrypt();
-
-	}
-
-	/**
-	 * 打印信息
-	 * 
-	 * @param o
-	 */
-	@SuppressWarnings("unused")
-	private void log(Object o) {
-
-		String time = (new Timestamp(System.currentTimeMillis())).toString().substring(0, 19);
-
-		System.out.println("[" + time + "] " + o.toString());
 
 	}
 
@@ -132,20 +121,20 @@ public class EncryptForwardThread extends Thread {
 
 					buffer = new byte[read_num + BUFFER_SIZE_STEP];
 
-					// log(this.getName() + " 缓冲区大小自动调整为：" + buffer.length);
+					logger.warn(this.getName() + " 缓冲区大小自动调整为：" + buffer.length);
 
 				} else if (read_num < (buffer.length - BUFFER_SIZE_STEP) && (buffer.length - BUFFER_SIZE_STEP) >= BUFFER_SIZE_MIN) {
 
 					buffer = new byte[buffer.length - BUFFER_SIZE_STEP];
 
-					// log(this.getName() + " 缓冲区大小自动调整为：" + +buffer.length);
+					logger.warn(this.getName() + " 缓冲区大小自动调整为：" + +buffer.length);
 
 				}
 
 			}
 
 		} catch (IOException ex) {
-
+			logger.error("加密转发出错: ",ex);
 		}
 
 		buffer = null;

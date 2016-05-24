@@ -23,9 +23,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.Socket;
-import java.sql.Timestamp;
 
 import javax.crypto.SecretKey;
+
+import org.apache.log4j.Logger;
 
 /**
  * 
@@ -35,6 +36,8 @@ import javax.crypto.SecretKey;
  *
  */
 public class ServerThread extends PointThread {
+	
+	private static Logger logger = Logger.getLogger(ServerThread.class);
 
 	private String proxyHost = null;
 
@@ -60,18 +63,6 @@ public class ServerThread extends PointThread {
 
 	}
 
-	/**
-	 * 打印信息
-	 * 
-	 * @param o
-	 */
-	private void log(Object o) {
-
-		String time = (new Timestamp(System.currentTimeMillis())).toString().substring(0, 19);
-
-		System.out.println("[" + time + "] " + o.toString());
-
-	}
 
 	/**
 	 * 关闭所有连接，此线程及转发子线程调用
@@ -83,7 +74,7 @@ public class ServerThread extends PointThread {
 			proxySocket.close();
 
 		} catch (Exception e) {
-
+			logger.error("关闭代理 Sockets 失败: ",e);
 		}
 
 		try {
@@ -91,6 +82,7 @@ public class ServerThread extends PointThread {
 			clientSocket.close();
 
 		} catch (Exception e) {
+			logger.error("关闭 clientSocket 失败: ",e);
 
 		}
 
@@ -118,6 +110,7 @@ public class ServerThread extends PointThread {
 		try {
 
 			// 连接代理服务器
+			logger.info("连接代理服务器...");
 			proxySocket = new Socket(proxyHost, proxyPort);
 
 			// 设置3分钟超时
@@ -137,7 +130,7 @@ public class ServerThread extends PointThread {
 
 		} catch (IOException ex) {
 
-			log("连接代理服务器出错：" + proxyHost + ":" + proxyPort);
+			logger.error("连接代理服务器出错：" + proxyHost + ":" + proxyPort,ex);
 
 			over();
 
