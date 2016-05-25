@@ -41,7 +41,7 @@ import org.json.simple.JSONObject;
  */
 public class Server extends Thread {
 	
-	private Logger logger = Logger.getLogger(Server.class);
+	private static Logger logger = Logger.getLogger(Server.class);
 
 	private File lockFile = null;
 

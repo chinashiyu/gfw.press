@@ -41,7 +41,7 @@ import org.json.simple.parser.ParseException;
  */
 public class Config {
 	
-	private Logger logger = Logger.getLogger(Config.class);
+	private static Logger logger = Logger.getLogger(Config.class);
 
 	public static final String CHARSET = "utf-8";
 

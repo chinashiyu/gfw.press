@@ -1,0 +1,6 @@
+/log/
+/client.lock
+/client.json
+/user.txt
+
+*.class
