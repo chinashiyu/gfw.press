@@ -221,7 +221,7 @@ public class Server extends Thread {
 	 */
 	public void run() {
 
-		// log("监听端口：" + listenPort);
+		logger.info("监听端口：" + listenPort);
 
 		if (encrypt == null || listenPort < 1024 || listenPort > 65536) {
 
@@ -347,7 +347,7 @@ public class Server extends Thread {
 
 			_sleep(20 * 1000L); // 暂停20秒
 
-			logger.debug("加载用户列表");
+			logger.debug("开始加载用户列表...");
 			users = config.getUser(); // 获取用户列表
 
 			if (users == null || users.size() == 0) {
@@ -355,6 +355,7 @@ public class Server extends Thread {
 				continue;
 
 			}
+			logger.debug("加载完成...");
 
 			Enumeration<String> threadPorts = threads.keys(); // 用户线程的所有端口
 

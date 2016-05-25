@@ -71,18 +71,16 @@ public class ServerThread extends PointThread {
 
 		try {
 
-			proxySocket.close();
+			if (proxySocket!=null) {
+				proxySocket.close();
+			}
+
+			if (clientSocket!=null) {
+				clientSocket.close();
+			}
 
 		} catch (Exception e) {
-			logger.error("关闭代理 Sockets 失败: ",e);
-		}
-
-		try {
-
-			clientSocket.close();
-
-		} catch (Exception e) {
-			logger.error("关闭 clientSocket 失败: ",e);
+			logger.error("关闭 资源 失败: ",e);
 
 		}
 
@@ -110,7 +108,7 @@ public class ServerThread extends PointThread {
 		try {
 
 			// 连接代理服务器
-			logger.info("连接代理服务器...");
+			logger.info("连接代理服务器,Host: "+proxyHost+" PORT: "+proxyPort);
 			proxySocket = new Socket(proxyHost, proxyPort);
 
 			// 设置3分钟超时
@@ -125,6 +123,8 @@ public class ServerThread extends PointThread {
 			clientIn = clientSocket.getInputStream();
 			clientOut = clientSocket.getOutputStream();
 
+			proxySocket.sendUrgentData(0xFF);
+			
 			proxyIn = proxySocket.getInputStream();
 			proxyOut = proxySocket.getOutputStream();
 
