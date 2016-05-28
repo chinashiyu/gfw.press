@@ -32,8 +32,8 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.json.simple.JSONObject;
 
+import press.gfw.decrypt.Encrypt;
 import press.gfw.utils.Config;
-import press.gfw.utils.Encrypt;
 
 /**
  * 

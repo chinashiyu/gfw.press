@@ -17,7 +17,7 @@
 *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 *    
 **/
-package press.gfw.utils;
+package press.gfw.decrypt;
 
 import java.io.IOException;
 import java.io.InputStream;

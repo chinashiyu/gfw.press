@@ -28,7 +28,7 @@ import javax.crypto.SecretKey;
 
 import org.apache.log4j.Logger;
 
-import press.gfw.utils.Encrypt;
+import press.gfw.decrypt.Encrypt;
 
 /**
  * 

@@ -28,9 +28,9 @@ import javax.crypto.SecretKey;
 
 import org.apache.log4j.Logger;
 
-import press.gfw.server.DecryptForwardThread;
+import press.gfw.decrypt.DecryptForwardThread;
+import press.gfw.decrypt.EncryptForwardThread;
 import press.gfw.server.PointThread;
-import press.gfw.utils.EncryptForwardThread;
 
 /**
  * 
