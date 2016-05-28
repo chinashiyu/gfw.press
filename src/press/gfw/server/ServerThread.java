@@ -17,15 +17,19 @@
 *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 *    
 **/
-package press.gfw;
+package press.gfw.server;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.Socket;
-import java.sql.Timestamp;
 
 import javax.crypto.SecretKey;
+
+import org.apache.log4j.Logger;
+
+import press.gfw.decrypt.DecryptForwardThread;
+import press.gfw.decrypt.EncryptForwardThread;
 
 /**
  * 
@@ -35,6 +39,8 @@ import javax.crypto.SecretKey;
  *
  */
 public class ServerThread extends PointThread {
+	
+	private static Logger logger = Logger.getLogger(ServerThread.class);
 
 	private String proxyHost = null;
 
@@ -60,18 +66,6 @@ public class ServerThread extends PointThread {
 
 	}
 
-	/**
-	 * 打印信息
-	 * 
-	 * @param o
-	 */
-	private void log(Object o) {
-
-		String time = (new Timestamp(System.currentTimeMillis())).toString().substring(0, 19);
-
-		System.out.println("[" + time + "] " + o.toString());
-
-	}
 
 	/**
 	 * 关闭所有连接，此线程及转发子线程调用
@@ -80,17 +74,16 @@ public class ServerThread extends PointThread {
 
 		try {
 
-			proxySocket.close();
+			if (proxySocket!=null) {
+				proxySocket.close();
+			}
+
+			if (clientSocket!=null) {
+				clientSocket.close();
+			}
 
 		} catch (Exception e) {
-
-		}
-
-		try {
-
-			clientSocket.close();
-
-		} catch (Exception e) {
+			logger.error("关闭 资源 失败: ",e);
 
 		}
 
@@ -118,26 +111,34 @@ public class ServerThread extends PointThread {
 		try {
 
 			// 连接代理服务器
+			logger.info("连接代理服务器,Host: "+proxyHost+" PORT: "+proxyPort);
 			proxySocket = new Socket(proxyHost, proxyPort);
 
 			// 设置3分钟超时
+			logger.debug("设置超时3分钟...");
 			proxySocket.setSoTimeout(180000);
 			clientSocket.setSoTimeout(180000);
 
 			// 打开 keep-alive
+			logger.debug("开启 keep-alive ...");
 			proxySocket.setKeepAlive(true);
 			clientSocket.setKeepAlive(true);
 
 			// 获取输入输出流
+			logger.debug("获取客户端 I/O 流...");
 			clientIn = clientSocket.getInputStream();
 			clientOut = clientSocket.getOutputStream();
 
+			logger.debug("发起心跳包测试...");
+			proxySocket.sendUrgentData(0xFF);
+			
+			logger.debug("获取代理服务器 I/O 流...");
 			proxyIn = proxySocket.getInputStream();
 			proxyOut = proxySocket.getOutputStream();
 
 		} catch (IOException ex) {
 
-			log("连接代理服务器出错：" + proxyHost + ":" + proxyPort);
+			logger.error("连接代理服务器出错：" + proxyHost + ":" + proxyPort,ex);
 
 			over();
 
@@ -146,8 +147,21 @@ public class ServerThread extends PointThread {
 		}
 
 		// 开始转发
+		logger.debug("开始转发数据...");
 		forwarding = true;
 
+		if (clientSocket.isClosed()||clientSocket.isInputShutdown()||clientSocket.isOutputShutdown()) {
+			logger.error("ClientSocket I/O Shutdown!");
+			over();
+			return;
+		}
+		
+		if (proxySocket.isInputShutdown()||proxySocket.isOutputShutdown()) {
+			logger.error("ProxySocket I/O Shutdown!");
+			over();
+			return;
+		}
+		
 		DecryptForwardThread forwardProxy = new DecryptForwardThread(this, clientIn, proxyOut, key);
 		forwardProxy.start();
 

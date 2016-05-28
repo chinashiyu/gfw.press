@@ -17,7 +17,7 @@
 *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 *    
 **/
-package press.gfw;
+package press.gfw.decrypt;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -33,7 +33,6 @@ import java.security.InvalidKeyException;
 import java.security.InvalidParameterException;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
-import java.sql.Timestamp;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
@@ -46,6 +45,7 @@ import javax.crypto.spec.SecretKeySpec;
 
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.log4j.Logger;
 
 /**
  * GFW.Press加密及解密管理
@@ -54,6 +54,8 @@ import org.apache.commons.codec.digest.DigestUtils;
  *
  */
 public class Encrypt {
+	
+	private static Logger logger = Logger.getLogger(Encrypt.class);
 
 	public static final String CHARSET = "UTF-8";
 
@@ -65,19 +67,19 @@ public class Encrypt {
 
 	public static final int NOISE_MAX = 1024 * 4; // 噪音数据最大长度，4K
 
-	public static void main(String[] args) {
-
-		Encrypt aes = new Encrypt();
-
-		// 文件加密测试
-		// aes.testEncryptFile();
-
-		// 测试
-		// aes.testSecureRandom();
-
-		aes.testIsPassword();
-
-	}
+//	public static void main(String[] args) {
+//
+//		Encrypt aes = new Encrypt();
+//
+//		// 文件加密测试
+//		// aes.testEncryptFile();
+//
+//		// 测试
+//		// aes.testSecureRandom();
+//
+//		aes.testIsPassword();
+//
+//	}
 
 	private SecureRandom secureRandom = null;
 
@@ -167,9 +169,7 @@ public class Encrypt {
 
 		} catch (InvalidKeyException | InvalidAlgorithmParameterException ex) {
 
-			log("初始化Cipher出错：");
-
-			ex.printStackTrace();
+			logger.error("初始化Cipher出错：",ex);
 
 			return null;
 
@@ -181,9 +181,7 @@ public class Encrypt {
 
 		} catch (IllegalBlockSizeException | BadPaddingException ex) {
 
-			log("加密数据出错：");
-
-			ex.printStackTrace();
+			logger.error("加密数据出错：",ex);
 
 			return null;
 
@@ -299,9 +297,7 @@ public class Encrypt {
 
 		} catch (IOException ex) {
 
-			log("解密文件出错：");
-
-			ex.printStackTrace();
+			logger.error("解密文件出错：",ex);
 
 			return false;
 
@@ -315,9 +311,7 @@ public class Encrypt {
 
 				} catch (IOException ex) {
 
-					log("关闭输出流出错：");
-
-					ex.printStackTrace();
+					logger.error("关闭输出流出错：",ex);
 
 					close = false;
 
@@ -333,9 +327,7 @@ public class Encrypt {
 
 				} catch (IOException ex) {
 
-					log("关闭输入流出错：");
-
-					ex.printStackTrace();
+					logger.error("关闭输入流出错：",ex);
 
 					close = false;
 
@@ -387,9 +379,7 @@ public class Encrypt {
 
 		} catch (InvalidKeyException | InvalidAlgorithmParameterException ex) {
 
-			log("初始化Cipher出错：");
-
-			ex.printStackTrace();
+			logger.error("初始化Cipher出错：",ex);
 
 			return null;
 
@@ -403,9 +393,7 @@ public class Encrypt {
 
 		} catch (IllegalBlockSizeException | BadPaddingException ex) {
 
-			log("加密数据出错：");
-
-			ex.printStackTrace();
+			logger.error("加密数据出错：",ex);
 
 			return null;
 
@@ -505,9 +493,7 @@ public class Encrypt {
 
 		} catch (IOException ex) {
 
-			log("加密文件出错：");
-
-			ex.printStackTrace();
+			logger.error("加密文件出错：",ex);
 
 			return false;
 
@@ -521,9 +507,7 @@ public class Encrypt {
 
 				} catch (IOException ex) {
 
-					log("关闭输出流出错：");
-
-					ex.printStackTrace();
+					logger.error("关闭输出流出错：",ex);
 
 					close = false;
 
@@ -539,9 +523,7 @@ public class Encrypt {
 
 				} catch (IOException ex) {
 
-					log("关闭输入流出错：");
-
-					ex.printStackTrace();
+					logger.error("关闭输入流出错：",ex);
 
 					close = false;
 
@@ -596,9 +578,7 @@ public class Encrypt {
 
 		} catch (InvalidKeyException | InvalidAlgorithmParameterException ex) {
 
-			log("初始化Cipher出错：");
-
-			ex.printStackTrace();
+			logger.error("初始化Cipher出错：",ex);
 
 			return null;
 
@@ -613,9 +593,7 @@ public class Encrypt {
 
 		} catch (IllegalBlockSizeException | BadPaddingException ex) {
 
-			log("加密数据出错：");
-
-			ex.printStackTrace();
+			logger.error("加密数据出错：",ex);
 
 			return null;
 
@@ -699,7 +677,7 @@ public class Encrypt {
 
 		} catch (UnsupportedEncodingException | NumberFormatException ex) {
 
-			ex.printStackTrace();
+			logger.error("还原块长度值出错: ",ex);
 
 			return 0;
 
@@ -723,7 +701,7 @@ public class Encrypt {
 
 		} catch (UnsupportedEncodingException ex) {
 
-			ex.printStackTrace();
+			logger.error("生成块长度值的字节数组出错: ",ex);
 
 			return null;
 
@@ -751,7 +729,7 @@ public class Encrypt {
 
 		} catch (UnsupportedEncodingException ex) {
 
-			ex.printStackTrace();
+			logger.error("块长度值转换为字节数组出错: ",ex);
 
 			return null;
 
@@ -837,9 +815,7 @@ public class Encrypt {
 
 		} catch (InvalidParameterException ex) {
 
-			log("生成AES SecretKey出错：");
-
-			ex.printStackTrace();
+			logger.error("生成AES SecretKey出错：",ex);
 
 			return null;
 
@@ -871,9 +847,7 @@ public class Encrypt {
 
 		} catch (UnsupportedEncodingException ex) {
 
-			log("使用密码生成SecretKey出错：");
-
-			ex.printStackTrace();
+			logger.error("使用密码生成SecretKey出错：",ex);
 
 			return null;
 
@@ -959,6 +933,8 @@ public class Encrypt {
 	public boolean isPassword(String password) {
 
 		if (password == null || !password.matches("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=\\S+$).{8,}$")) {
+			
+			logger.error("密码不符合规范:\n1、长度至少为八个字符\n至少包含一个数字\n至少包含一个大写字母\n至少包含一个小写字母\n不得包含空格");
 
 			return false;
 
@@ -976,107 +952,95 @@ public class Encrypt {
 
 	}
 
-	/**
-	 * 打印信息
-	 * 
-	 * @param o
-	 */
-	private void log(Object o) {
 
-		String time = (new Timestamp(System.currentTimeMillis())).toString().substring(0, 19);
-
-		System.out.println("[" + time + "] " + o.toString());
-
-	}
-
-	public void test() {
-
-		byte[] bytes = getBlockSizeBytes(888, 0);
-
-		byte[] size_bytes = encrypt(getKey(), bytes);
-
-		log("长度：" + size_bytes.length);
-
-		log(new String(bytes));
-
-		int[] sizes = this.getBlockSizes(bytes);
-
-		System.out.println(sizes[0]);
-
-		System.out.println(sizes[1]);
-
-	}
-
-	public void testEncryptFile() throws Exception {
-
-		SecretKey key = getPasswordKey("abc123");
-
-		log("文件加密测试");
-
-		String ext = ".msi";
-
-		File f1 = new File("d:/" + 1 + ext);
-
-		File f2 = new File("d:/" + 2 + ext);
-
-		File f3 = new File("d:/" + 3 + ext);
-
-		long start = System.currentTimeMillis();
-
-		encryptFile(key, f1, f2);
-
-		long end = System.currentTimeMillis();
-
-		log("时间：" + (end - start));
-
-		log("每秒：" + f1.length() * 1000 / (end - start) / 1024 / 1024 + "M");
-
-		log("文件解密测试");
-
-		start = System.currentTimeMillis();
-
-		decryptFile(key, f2, f3);
-
-		end = System.currentTimeMillis();
-
-		log("时间：" + (end - start));
-
-		log("每秒：" + f2.length() * 1000 / (end - start) / 1024 / 1024 + "M");
-
-	}
-
-	public void testIsPassword() {
-
-		String password = "xxXxab12";
-
-		log(isPassword(password));
-
-	}
-
-	public void testSecureRandom() {
-
-		// secureRandom.nextBytes(bytes);
-
-		// secureRandom.nextBytes(bytes);
-
-		long start = System.currentTimeMillis();
-
-		byte[] bytes = this.getSecureRandom(1024);
-
-		long end = System.currentTimeMillis();
-
-		log("时间：" + (end - start));
-
-		try {
-
-			log(new String(bytes, "UTF-8"));
-
-		} catch (UnsupportedEncodingException ex) {
-
-			ex.printStackTrace();
-
-		}
-
-	}
+//	public void test() {
+//
+//		byte[] bytes = getBlockSizeBytes(888, 0);
+//
+//		byte[] size_bytes = encrypt(getKey(), bytes);
+//
+//		logger.info("长度：" + size_bytes.length);
+//
+//		log(new String(bytes));
+//
+//		int[] sizes = this.getBlockSizes(bytes);
+//
+//		System.out.println(sizes[0]);
+//
+//		System.out.println(sizes[1]);
+//
+//	}
+//
+//	public void testEncryptFile() throws Exception {
+//
+//		SecretKey key = getPasswordKey("abc123");
+//
+//		log("文件加密测试");
+//
+//		String ext = ".msi";
+//
+//		File f1 = new File("d:/" + 1 + ext);
+//
+//		File f2 = new File("d:/" + 2 + ext);
+//
+//		File f3 = new File("d:/" + 3 + ext);
+//
+//		long start = System.currentTimeMillis();
+//
+//		encryptFile(key, f1, f2);
+//
+//		long end = System.currentTimeMillis();
+//
+//		log("时间：" + (end - start));
+//
+//		log("每秒：" + f1.length() * 1000 / (end - start) / 1024 / 1024 + "M");
+//
+//		log("文件解密测试");
+//
+//		start = System.currentTimeMillis();
+//
+//		decryptFile(key, f2, f3);
+//
+//		end = System.currentTimeMillis();
+//
+//		log("时间：" + (end - start));
+//
+//		log("每秒：" + f2.length() * 1000 / (end - start) / 1024 / 1024 + "M");
+//
+//	}
+//
+//	public void testIsPassword() {
+//
+//		String password = "xxXxab12";
+//
+//		log(isPassword(password));
+//
+//	}
+//
+//	public void testSecureRandom() {
+//
+//		// secureRandom.nextBytes(bytes);
+//
+//		// secureRandom.nextBytes(bytes);
+//
+//		long start = System.currentTimeMillis();
+//
+//		byte[] bytes = this.getSecureRandom(1024);
+//
+//		long end = System.currentTimeMillis();
+//
+//		log("时间：" + (end - start));
+//
+//		try {
+//
+//			log(new String(bytes, "UTF-8"));
+//
+//		} catch (UnsupportedEncodingException ex) {
+//
+//			ex.printStackTrace();
+//
+//		}
+//
+//	}
 
 }

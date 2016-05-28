@@ -17,7 +17,7 @@
 *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 *    
 **/
-package press.gfw;
+package press.gfw.utils;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -27,6 +27,8 @@ import java.io.UnsupportedEncodingException;
 import java.sql.Timestamp;
 import java.util.Hashtable;
 
+import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.Logger;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
@@ -38,6 +40,8 @@ import org.json.simple.parser.ParseException;
  *
  */
 public class Config {
+	
+	private static Logger logger = Logger.getLogger(Config.class);
 
 	public static final String CHARSET = "utf-8";
 
@@ -102,9 +106,7 @@ public class Config {
 
 		} catch (ParseException ex) {
 
-			log("分析JSON字符串时出错：");
-
-			ex.printStackTrace();
+			logger.error("字符串转化 JSON 对象失败: ",ex);
 
 		}
 
@@ -135,8 +137,9 @@ public class Config {
 
 		String text = read(userFile);
 
-		if (text == null) {
+		if (StringUtils.isBlank(text)) {
 
+			logger.warn("用户配置文件读取失败");
 			return null;
 
 		}
@@ -146,7 +149,8 @@ public class Config {
 		text = null;
 
 		if (lines == null || lines.length == 0) {
-
+			
+			logger.warn("用户配置文件为空");
 			return null;
 
 		}
@@ -195,7 +199,8 @@ public class Config {
 		int size = 0;
 
 		if (file == null || !file.exists() || (size = (int) file.length()) == 0) {
-
+			
+			logger.error("待加载配置文件为空!");
 			return null;
 
 		}
@@ -226,9 +231,7 @@ public class Config {
 
 		} catch (IOException ex) {
 
-			log("读文件出错：");
-
-			ex.printStackTrace();
+			logger.error("读取 JSON 配置文件出现异常: ",ex);
 
 			return null;
 
@@ -239,13 +242,14 @@ public class Config {
 				fis.close();
 
 			} catch (IOException ex) {
-
+				logger.error("加载 JSON 配置文件出错，资源释放失败: ",ex);
 			}
 
 		}
 
 		if (count != size) {
 
+			logger.error("读取配置文件不完整，配置文件加载失败");
 			return null;
 
 		}
@@ -256,9 +260,7 @@ public class Config {
 
 		} catch (UnsupportedEncodingException ex) {
 
-			log("获取文件内容出错：");
-
-			ex.printStackTrace();
+			logger.error("文件内容转化字符串出错: ",ex);
 
 		}
 

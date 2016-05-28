@@ -17,15 +17,18 @@
 *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 *    
 **/
-package press.gfw;
+package press.gfw.client;
 
 import java.io.File;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.sql.Timestamp;
 
 import javax.crypto.SecretKey;
+
+import org.apache.log4j.Logger;
+
+import press.gfw.decrypt.Encrypt;
 
 /**
  * 
@@ -35,6 +38,8 @@ import javax.crypto.SecretKey;
  *
  */
 public class Client extends Thread {
+	
+	private static Logger logger = Logger.getLogger(Client.class);
 
 	private int listenPort = 0;
 
@@ -94,6 +99,148 @@ public class Client extends Thread {
 
 	}
 
+	
+	public synchronized void kill() {
+
+		kill = true;
+
+		if (listenSocket != null && !listenSocket.isClosed()) {
+
+			try {
+
+				listenSocket.close();
+
+			} catch (IOException ex) {
+
+			}
+
+			listenSocket = null;
+
+		}
+
+	}
+
+
+	/**
+	 * 启动客户端
+	 * 
+	 * @return
+	 */
+	public void run() {
+
+		logger.debug("代理线程启动...");
+		
+		logger.debug("启动参数:\nserverHost: "+serverHost+"\nserverPort: "+serverPort+"\nlistenPort: "+listenPort+"\npassword: "+password);
+		
+		if (serverHost == null || (serverHost = serverHost.trim()).length() == 0 || serverPort == 0 || listenPort == 0 || key == null) {
+
+			status = "启动失败：配置错误";
+
+			logger.error("参数错误,启动失败!");
+			kill = true;
+
+			return;
+
+		}
+
+		logger.debug("创建客户端锁文件...");
+		File lockFile = new File("client.lock");
+
+		try {
+
+			listenSocket = new ServerSocket(listenPort);
+
+		} catch (IOException ex) {
+			
+			logger.error("客户端锁文件创建失败: ",ex);
+
+			if (lockFile.exists()) {
+
+				System.exit(0);
+
+			}
+
+			kill = true;
+
+			status = "线程" + getName() + "启动时监听" + listenPort + "端口出错，线程结束。";
+
+			return;
+
+		}
+
+		lockFile.deleteOnExit();
+
+		if (!lockFile.exists()) {
+
+			try {
+
+				lockFile.createNewFile();
+
+			} catch (IOException ioe) {
+				logger.error("客户端锁文件创建失败: ",ioe);
+			}
+
+		}
+
+		while (!kill) {
+
+			Socket agentSocket = null;
+
+			try {
+
+				agentSocket = listenSocket.accept();
+
+			} catch (IOException ex) {
+
+				if (listenSocket != null && !listenSocket.isClosed()) {
+
+					status = "线程" + getName() + "运行时监听" + listenPort + "端口出错，休息3秒钟后重试。";
+					
+					logger.warn(status);
+					
+					_sleep(3000L);
+
+					continue;
+
+				} else {
+
+					status = "线程" + getName() + "运行时监听" + listenPort + "端口出错，线程结束。";
+					
+					logger.error(status);
+					
+					break;
+
+				}
+
+			}
+
+			ClientThread clientThread = new ClientThread(agentSocket, serverHost, serverPort, key);
+			logger.info(clientThread.getName() + " Socket 通讯客户端线程创建...");
+			clientThread.start();
+			logger.info(clientThread.getName() + " Socket 通讯客户端线程启动...");
+
+		}
+
+		if (listenSocket != null && !listenSocket.isClosed()) {
+
+			try {
+
+				listenSocket.close();
+
+			} catch (IOException ex) {
+
+			}
+
+			listenSocket = null;
+
+		}
+
+		kill = true;
+
+	}
+	
+	/*********** SET GET Method ************/
+	
 	/**
 	 * @return the listenPort
 	 */
@@ -142,143 +289,5 @@ public class Client extends Thread {
 		return kill;
 	}
 
-	public synchronized void kill() {
-
-		kill = true;
-
-		if (listenSocket != null && !listenSocket.isClosed()) {
-
-			try {
-
-				listenSocket.close();
-
-			} catch (IOException ex) {
-
-			}
-
-			listenSocket = null;
-
-		}
-
-	}
-
-	/**
-	 * 打印信息
-	 * 
-	 * @param o
-	 */
-	@SuppressWarnings("unused")
-	private void log(Object o) {
-
-		String time = (new Timestamp(System.currentTimeMillis())).toString().substring(0, 19);
-
-		System.out.println("[" + time + "] " + o.toString());
-
-	}
-
-	/**
-	 * 启动客户端
-	 * 
-	 * @return
-	 */
-	public void run() {
-
-		if (serverHost == null || (serverHost = serverHost.trim()).length() == 0 || serverPort == 0 || listenPort == 0 || key == null) {
-
-			status = "启动失败：配置错误";
-
-			kill = true;
-
-			return;
-
-		}
-
-		File lockFile = new File("client.lock");
-
-		try {
-
-			listenSocket = new ServerSocket(listenPort);
-
-		} catch (IOException ex) {
-
-			if (lockFile.exists()) {
-
-				System.exit(0);
-
-			}
-
-			kill = true;
-
-			status = "线程" + getName() + "启动时监听" + listenPort + "端口出错，线程结束。";
-
-			return;
-
-		}
-
-		lockFile.deleteOnExit();
-
-		if (!lockFile.exists()) {
-
-			try {
-
-				lockFile.createNewFile();
-
-			} catch (IOException ioe) {
-
-			}
-
-		}
-
-		while (!kill) {
-
-			Socket agentSocket = null;
-
-			try {
-
-				agentSocket = listenSocket.accept();
-
-			} catch (IOException ex) {
-
-				if (listenSocket != null && !listenSocket.isClosed()) {
-
-					status = "线程" + getName() + "运行时监听" + listenPort + "端口出错，休息3秒钟后重试。";
-
-					_sleep(3000L);
-
-					continue;
-
-				} else {
-
-					status = "线程" + getName() + "运行时监听" + listenPort + "端口出错，线程结束。";
-
-					break;
-
-				}
-
-			}
-
-			ClientThread clientThread = new ClientThread(agentSocket, serverHost, serverPort, key);
-
-			clientThread.start();
-
-		}
-
-		if (listenSocket != null && !listenSocket.isClosed()) {
-
-			try {
-
-				listenSocket.close();
-
-			} catch (IOException ex) {
-
-			}
-
-			listenSocket = null;
-
-		}
-
-		kill = true;
-
-	}
 
 }
