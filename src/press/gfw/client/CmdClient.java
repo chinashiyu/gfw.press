@@ -1,5 +1,6 @@
 package press.gfw.client;
 
+import org.apache.log4j.Logger;
 import org.json.simple.JSONObject;
 
 import press.gfw.utils.Config;
@@ -15,6 +16,8 @@ import press.gfw.utils.Config;
  */
 public class CmdClient {
 	
+	private static Logger logger = Logger.getLogger(CmdClient.class);
+
 	/**
 	 * 
 	 * @Title: main
@@ -23,6 +26,8 @@ public class CmdClient {
 	 * @return: void
 	 */
 	public static void main(String[] args) {
+		
+		logger.info("命令行客户端启动...");
 		
 		// 服务器 IP
 		String serverHost = "";
@@ -33,6 +38,7 @@ public class CmdClient {
 		// 本地代理端口
 		String proxyPort ="";
 		
+		logger.info("加载配置文件...");
 		JSONObject json = new Config().getClientConfig();
 
 		if (json != null) {
@@ -47,8 +53,10 @@ public class CmdClient {
 
 		}
 		
+		logger.info("创建监听线程...");
 		Client client = new Client(serverHost, serverPort, password, proxyPort);
 
+		logger.info("启动代理服务...");
 		client.start();
 	}
 }

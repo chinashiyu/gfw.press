@@ -23,9 +23,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.Socket;
-import java.sql.Timestamp;
 
 import javax.crypto.SecretKey;
+
+import org.apache.log4j.Logger;
 
 import press.gfw.server.DecryptForwardThread;
 import press.gfw.server.PointThread;
@@ -39,6 +40,8 @@ import press.gfw.utils.EncryptForwardThread;
  *
  */
 public class ClientThread extends PointThread {
+	
+	private static Logger logger = Logger.getLogger(ClientThread.class);
 
 	private String serverHost = null;
 
@@ -64,18 +67,6 @@ public class ClientThread extends PointThread {
 
 	}
 
-	/**
-	 * 打印信息
-	 * 
-	 * @param o
-	 */
-	private void log(Object o) {
-
-		String time = (new Timestamp(System.currentTimeMillis())).toString().substring(0, 19);
-
-		System.out.println("[" + time + "] " + o.toString());
-
-	}
 
 	/**
 	 * 关闭所有连接，此线程及转发子线程调用
@@ -141,7 +132,7 @@ public class ClientThread extends PointThread {
 
 		} catch (IOException ex) {
 
-			log("连接服务器出错：" + serverHost + ":" + serverPort);
+			logger.error("连接服务器出错：" + serverHost + ":" + serverPort,ex);
 
 			over();
 
@@ -151,10 +142,12 @@ public class ClientThread extends PointThread {
 
 		// 开始转发
 		forwarding = true;
-
+		
+		logger.debug("加密转发开始...");
 		EncryptForwardThread forwardServer = new EncryptForwardThread(this, agentIn, serverOut, key);
 		forwardServer.start();
 
+		logger.debug("解密转发开始...");
 		DecryptForwardThread forwardAgent = new DecryptForwardThread(this, serverIn, agentOut, key);
 		forwardAgent.start();
 
