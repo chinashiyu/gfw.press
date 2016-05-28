@@ -112,19 +112,24 @@ public class ServerThread extends PointThread {
 			proxySocket = new Socket(proxyHost, proxyPort);
 
 			// 设置3分钟超时
+			logger.debug("设置超时3分钟...");
 			proxySocket.setSoTimeout(180000);
 			clientSocket.setSoTimeout(180000);
 
 			// 打开 keep-alive
+			logger.debug("开启 keep-alive ...");
 			proxySocket.setKeepAlive(true);
 			clientSocket.setKeepAlive(true);
 
 			// 获取输入输出流
+			logger.debug("获取客户端 I/O 流...");
 			clientIn = clientSocket.getInputStream();
 			clientOut = clientSocket.getOutputStream();
 
+			logger.debug("发起心跳包测试...");
 			proxySocket.sendUrgentData(0xFF);
 			
+			logger.debug("获取代理服务器 I/O 流...");
 			proxyIn = proxySocket.getInputStream();
 			proxyOut = proxySocket.getOutputStream();
 
@@ -139,8 +144,21 @@ public class ServerThread extends PointThread {
 		}
 
 		// 开始转发
+		logger.debug("开始转发数据...");
 		forwarding = true;
 
+		if (clientSocket.isClosed()||clientSocket.isInputShutdown()||clientSocket.isOutputShutdown()) {
+			logger.error("ClientSocket I/O Shutdown!");
+			over();
+			return;
+		}
+		
+		if (proxySocket.isInputShutdown()||proxySocket.isOutputShutdown()) {
+			logger.error("ProxySocket I/O Shutdown!");
+			over();
+			return;
+		}
+		
 		DecryptForwardThread forwardProxy = new DecryptForwardThread(this, clientIn, proxyOut, key);
 		forwardProxy.start();
 
