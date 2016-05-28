@@ -130,6 +130,8 @@ public class Client extends Thread {
 
 		logger.debug("代理线程启动...");
 		
+		logger.debug("启动参数:\nserverHost: "+serverHost+"\nserverPort: "+serverPort+"\nlistenPort: "+listenPort+"\npassword: "+password);
+		
 		if (serverHost == null || (serverHost = serverHost.trim()).length() == 0 || serverPort == 0 || listenPort == 0 || key == null) {
 
 			status = "启动失败：配置错误";

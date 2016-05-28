@@ -933,6 +933,8 @@ public class Encrypt {
 	public boolean isPassword(String password) {
 
 		if (password == null || !password.matches("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=\\S+$).{8,}$")) {
+			
+			logger.error("密码不符合规范:\n1、长度至少为八个字符\n至少包含一个数字\n至少包含一个大写字母\n至少包含一个小写字母\n不得包含空格");
 
 			return false;
 
