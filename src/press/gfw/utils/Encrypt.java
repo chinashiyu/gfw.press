@@ -17,7 +17,7 @@
 *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 *    
 **/
-package press.gfw;
+package press.gfw.utils;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;

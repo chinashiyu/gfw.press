@@ -17,7 +17,7 @@
 *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 *    
 **/
-package press.gfw;
+package press.gfw.utils;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -26,6 +26,8 @@ import java.io.OutputStream;
 import javax.crypto.SecretKey;
 
 import org.apache.log4j.Logger;
+
+import press.gfw.server.PointThread;
 
 /**
  * GFW.Press加密及转发线程

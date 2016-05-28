@@ -17,7 +17,7 @@
 *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 *    
 **/
-package press.gfw;
+package press.gfw.server;
 
 import java.io.File;
 import java.io.IOException;
@@ -31,6 +31,9 @@ import javax.crypto.SecretKey;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.json.simple.JSONObject;
+
+import press.gfw.utils.Config;
+import press.gfw.utils.Encrypt;
 
 /**
  * 

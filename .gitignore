@@ -2,5 +2,4 @@
 /client.lock
 /client.json
 /user.txt
-
-*.class
+/bin/

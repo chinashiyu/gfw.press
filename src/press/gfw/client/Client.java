@@ -17,7 +17,7 @@
 *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 *    
 **/
-package press.gfw;
+package press.gfw.client;
 
 import java.io.File;
 import java.io.IOException;
@@ -26,6 +26,8 @@ import java.net.Socket;
 import java.sql.Timestamp;
 
 import javax.crypto.SecretKey;
+
+import press.gfw.utils.Encrypt;
 
 /**
  * 

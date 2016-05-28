@@ -17,7 +17,7 @@
 *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 *    
 **/
-package press.gfw;
+package press.gfw.client;
 
 import java.awt.AWTException;
 import java.awt.BorderLayout;
@@ -42,6 +42,8 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
 import org.json.simple.JSONObject;
+
+import press.gfw.utils.Config;
 
 /**
  * 
