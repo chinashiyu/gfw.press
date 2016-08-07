@@ -309,7 +309,7 @@ public class Server extends Thread {
 	 */
 	public void service() {
 
-		if (System.currentTimeMillis() - lockFile.lastModified() < 30 * 000L) {
+		if (System.currentTimeMillis() - lockFile.lastModified() < 30 * 1000L) {
 
 			log("服务器已经在运行中");
 
@@ -343,11 +343,11 @@ public class Server extends Thread {
 
 			lockFile.setLastModified(System.currentTimeMillis());
 
-			_sleep(20 * 1000L); // 暂停20秒
-
 			users = config.getUser(); // 获取用户列表
 
 			if (users == null || users.size() == 0) {
+
+				_sleep(10 * 1000L); // 暂停10秒
 
 				continue;
 
@@ -406,6 +406,8 @@ public class Server extends Thread {
 			}
 
 			users.clear();
+
+			_sleep(20 * 1000L); // 暂停20秒
 
 		}
 
