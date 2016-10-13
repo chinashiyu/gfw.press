@@ -484,6 +484,8 @@ public class Windows extends JFrame {
 			}
 
 		}
+		
+		icon.setToolTip("GFW press\n"+serverHost+":"+serverPort);
 
 		client = new Client(serverHost, serverPort, password, proxyPort);
 
