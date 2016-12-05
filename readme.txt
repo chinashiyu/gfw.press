@@ -1,5 +1,5 @@
 
-欢迎使用 GFW.Press 软件
+欢迎使用 GFW.Press 新一代军用级高强度加密抗干扰网络数据高速传输软件
 
 
 一、客户端
@@ -25,16 +25,29 @@ yum install java-1.8.0-openjdk.x86_64 -y ;
 
 第三步：安装代理软件
 
-yum install squid -y ; 或者 yum instsall 3proxy -y ;
+yum install squid -y ; 或者 yum install 3proxy -y ;
 
 第四步：修改连接帐号文件user.txt
 
 每行表示一个帐号，由 端口号+空格+密码 组成，密码长度至少8位，必需包含大小写字母和数字
 
-第五步：运行
+第五步：修改脚本可执行属性
 
 chmod u+x /gfw.press/server.sh ;
+chmod u+x /gfw.press/stop.sh ;
+
+第六步：运行
+
 /gfw.press/server.sh ;
+
+第七步：停止
+
+/gfw.press/stop.sh ;
+
+
+赞助捐款帐号(PayPal 或 Skrill)： donate@gfw.press 
+
+所获捐款主要用于吃喝嫖赌，偶尔用于购买服务器和带宽
 
 
 请访问 http://twitter.com/chinashiyu 发表意见及建议
@@ -44,4 +57,5 @@ chmod u+x /gfw.press/server.sh ;
 chinashiyu 
 
 2016-04-16 23:49:00
+2016-12-05 11:44:00
 
