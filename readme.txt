@@ -39,7 +39,7 @@ cd / && git clone https://github.com/chinashiyu/gfw.press.git ;
 
 第二步：安装 JDK
 
-yum install java-1.8.0-openjdk -y ;
+yum install java-1.8.0-openjdk-devel -y ;
 
 第三步：安装代理软件
 
@@ -79,5 +79,5 @@ chinashiyu
 2016-04-16 23:49:00
 2016-12-05 11:44:00
 2016-12-05 22:00:00
-
+2016-12-29 09:00:00
 
