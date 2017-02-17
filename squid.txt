@@ -1,0 +1,15 @@
+squid性能快速优化
+
+squid是常用的http代理服务器，默认情况下，通常会使用部分内存作为缓存，并且会记录访问日志；
+但是，在大多数实际应用中，缓存并不能提高访问速度，而记录日志也会占用系统资源；
+所以，除非有特别需求，可以禁止缓存和日志，将减少资源使用，明显提高squid的性能；
+
+具体设置，以 CentOS 下的 squid 3.5 为例，只需把下面的配置加入 /etc/squid/squid.conf 文件并重启squid即可
+
+dns_nameservers 8.8.4.4 8.8.8.8
+shutdown_lifetime 3 seconds
+access_log none
+cache_log /dev/null
+logfile_rotate 0
+cache deny all
+
