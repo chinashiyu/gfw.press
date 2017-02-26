@@ -65,6 +65,9 @@ chmod u+x /gfw.press/stop.sh ;
 /gfw.press/stop.sh ;
 
 
+如果自己搭建大杀器服务，购买服务器时建议选择洛杉矶或东京数据中心 https://gfw.press/vps.php 
+
+
 赞助捐款帐号(PayPal 或 Skrill)： donate@gfw.press
 
 Bitcoin： 1GC4jSScEALNnqVq1zzE5RwDMEFfY34Gf8
@@ -72,7 +75,7 @@ Bitcoin： 1GC4jSScEALNnqVq1zzE5RwDMEFfY34Gf8
 每捐赠一美元，可能会帮助到十个人翻墙一个月
 
 
-请访问 https://gfw.press/ 获取免费翻墙服务
+请访问 https://gfw.press/ 获取免费大杀器服务
 
 请访问 http://twitter.com/chinashiyu 发表意见及建议
 
@@ -85,5 +88,6 @@ chinashiyu
 2016-12-05 22:00:00
 2016-12-29 09:00:00
 2017-02-17 10:00:00
+2017-02-26 11:00:00
 
 
