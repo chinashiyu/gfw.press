@@ -47,14 +47,15 @@ yum install squid -y ;
 或者 
 yum install 3proxy -y ;
 
-第四步：修改连接帐号文件user.txt
-
-每行表示一个帐号，由 端口号+空格+密码 组成，密码长度至少8位，必需包含大小写字母和数字
-
-第五步：修改脚本可执行属性
+第四步：修改脚本可执行属性
 
 chmod u+x /gfw.press/server.sh ;
 chmod u+x /gfw.press/stop.sh ;
+chmod u+x /gfw.press/make_user.sh ;
+
+第五步：执行make_user.sh脚本，以生成新的user.txt用户文件，详情请看脚本内说明
+
+/gfw.press/make_user.sh ;
 
 第六步：运行
 
@@ -89,5 +90,5 @@ chinashiyu
 2016-12-29 09:00:00
 2017-02-17 10:00:00
 2017-02-26 11:00:00
-
+2017-02-27 20:00:00
 
