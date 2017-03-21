@@ -51,6 +51,22 @@ else
                 sed -i "s/-Xmx512M/-Xmx1024M/g" /gfw.press/server.sh ;
         fi ;
 
+        iptables -F ;
+        iptables -A INPUT -p tcp --dport 22 -j ACCEPT ;
+        iptables -A INPUT -p tcp --dport 80 -j ACCEPT ;
+        iptables -A INPUT -p tcp --dport 443 -j ACCEPT ;
+        iptables -A INPUT -p tcp --dport 25 -j ACCEPT ;
+        iptables -A INPUT -p tcp --dport 110 -j ACCEPT ;
+        iptables -A INPUT -p tcp --dport 10000:10100 -j ACCEPT ;
+        iptables -P INPUT DROP ;
+        iptables -P FORWARD DROP ;
+        iptables -P OUTPUT ACCEPT ;
+        iptables -A INPUT -i lo -j ACCEPT ;
+        iptables -A INPUT -m state --state ESTABLISHED,RELATED -j ACCEPT ;
+        iptables -A INPUT -p icmp -j ACCEPT ;
+        /sbin/service iptables save ;
+        /sbin/service iptables restart ;
+
         echo ;
         echo "已完成 GFW.Press 服务器安装" ;
         echo ;
