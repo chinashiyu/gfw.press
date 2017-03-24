@@ -7,15 +7,15 @@
 请(翻墙)下载客户端安装包
 
 Windows 版: 
-http://gfw.press/GFW.Press.msi
+https://gfw.press/GFW.Press.msi
 
 Android 版: 
-http://gfw.press/GFW.Press.apk
+https://gfw.press/GFW.Press.apk
 
 其它版本下载: 
 https://gfw.press/download.php
 
-请(翻墙)访问 http://gfw.press/ 获取服务器信息
+请(翻墙)访问 https://gfw.press/ 获取服务器信息
 
 配置填写完成，点击“确定”按钮
 
@@ -41,7 +41,7 @@ Bitcoin： 1GC4jSScEALNnqVq1zzE5RwDMEFfY34Gf8
 
 博客： https://gfw.press/blog/
 
-推特： http://twitter.com/chinashiyu
+推特： https://twitter.com/chinashiyu
 
 
 祝您好运
