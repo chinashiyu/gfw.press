@@ -28,13 +28,11 @@ https://gfw.press/download.php
 https://gfw.press/blog/?p=21
 
 
-赞助捐款帐号
+赞助
 
 PayPal： donate@gfw.press
 
 Bitcoin： 1GC4jSScEALNnqVq1zzE5RwDMEFfY34Gf8
-
-每捐赠一美元，可能会帮助到十个人翻墙一个月
 
 
 官网： https://gfw.press/
