@@ -1,0 +1,7 @@
+#!/bin/csh
+
+set _cpu = `ps aux |grep 'press.gfw.Server$' |awk '{print $3*10}'`
+
+if ($_cpu == '') then
+	/gfw.press/server.sh
+endif
