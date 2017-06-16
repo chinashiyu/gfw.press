@@ -3,7 +3,7 @@
 set _cpu = `ps aux |grep '^squid' |awk '{print $3*10}'`
 
 if ($_cpu != '' && $_cpu > 900) then
-	killall squid
+	killall -9 squid
 	sleep 3
 	service squid start
 endif
