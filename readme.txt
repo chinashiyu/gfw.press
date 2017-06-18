@@ -15,18 +15,14 @@ https://gfw.press/GFW.Press.apk
 其它版本下载: 
 https://gfw.press/download.php
 
-请(翻墙)访问 https://gfw.press/ 获取服务器信息
-
-配置填写完成，点击“确定”按钮
-
-设置浏览器代理，地址： 127.0.0.1  端口： 3128
+快速入门帮助：
+https://gfw.press/blog/?p=2047
 
 
 二、服务器
 
 自己搭建服务器：
 https://gfw.press/blog/?p=21
-
 
 
 官网： https://gfw.press/
