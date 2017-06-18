@@ -28,12 +28,6 @@ https://gfw.press/download.php
 https://gfw.press/blog/?p=21
 
 
-赞助
-
-PayPal： donate@gfw.press
-
-Bitcoin： 1GC4jSScEALNnqVq1zzE5RwDMEFfY34Gf8
-
 
 官网： https://gfw.press/
 
@@ -48,4 +42,5 @@ Bitcoin： 1GC4jSScEALNnqVq1zzE5RwDMEFfY34Gf8
 
 2016-04-16 23:49:00
 2017-03-24 15:00:00
+2017-06-18 09:38:00
 
