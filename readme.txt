@@ -21,8 +21,11 @@ https://gfw.press/blog/?p=2047
 
 二、服务器
 
-自己搭建服务器：
-https://gfw.press/blog/?p=21
+使用 Windows 快照搭建大杀器节点：
+https://github.com/chinashiyu/gfw.press/blob/master/%E4%BD%BF%E7%94%A8Windows%E5%BF%AB%E7%85%A7%E6%90%AD%E5%BB%BA%E5%A4%A7%E6%9D%80%E5%99%A8%E8%8A%82%E7%82%B9.pdf
+
+使用 Linux 快照搭建大杀器节点： 
+https://github.com/chinashiyu/gfw.press/blob/master/%E4%BD%BF%E7%94%A8Linux%E5%BF%AB%E7%85%A7%E6%90%AD%E5%BB%BA%E5%A4%A7%E6%9D%80%E5%99%A8%E8%8A%82%E7%82%B9.pdf
 
 
 官网： https://gfw.press/
@@ -39,4 +42,5 @@ https://gfw.press/blog/?p=21
 2016-04-16 23:49:00
 2017-03-24 15:00:00
 2017-06-18 09:38:00
+2017-11-22 01:38:00
 
