@@ -1,0 +1,115 @@
+echo ;
+echo ;
+echo 正在安装 GFW.Press 服务器，请稍候.......... ;
+echo ;
+
+# 安装设置语言环境
+yum install langpacks-zh_CN -y   -q > /dev/null ;
+echo 'LANG="zh_CN.UTF-8"' > /etc/locale.conf ;
+echo 'LC_ALL="zh_CN.UTF-8"' >> /etc/locale.conf ;
+
+
+# 配置防火墙
+firewall-cmd --zone=public --add-port=10000-20000/tcp --permanent > /dev/null ;
+firewall-cmd --reload > /dev/null ;
+
+# 安装增强软件库
+yum install elrepo-release -y  -q > /dev/null ;
+yum install epel-release -y  -q > /dev/null ;
+
+# 安装密码生成鸡
+yum install pwgen -y  -q > /dev/null ;
+
+# 安装 Java 虚拟鸡
+yum install java-1.8.0-openjdk-devel -y  -q > /dev/null ;
+
+# 安装 Git 源代码管理鸡
+yum install git -y  -q > /dev/null ;
+
+# 安装 Squid Http 代理服务鸡
+yum install squid -y  -q > /dev/null ;
+
+# 优化 Squid Http 代理服务鸡配置
+if [ -e "/etc/squid/squid.conf" ] ; then
+        echo "" >> /etc/squid/squid.conf
+        echo "shutdown_lifetime 3 seconds" >> /etc/squid/squid.conf
+        echo "access_log none" >> /etc/squid/squid.conf
+        echo "cache_log /dev/null" >> /etc/squid/squid.conf
+        echo "logfile_rotate 0" >> /etc/squid/squid.conf
+        echo "cache deny all" >> /etc/squid/squid.conf
+        echo "" >> /etc/squid/squid.conf
+        echo "cache_mem 0 MB" >> /etc/squid/squid.conf
+        echo "maximum_object_size_in_memory 0 KB" >> /etc/squid/squid.conf
+        echo "memory_cache_mode disk" >> /etc/squid/squid.conf
+        echo "memory_cache_shared off" >> /etc/squid/squid.conf
+        echo "memory_pools off" >> /etc/squid/squid.conf
+        echo "memory_pools_limit 0 MB" >> /etc/squid/squid.conf
+        echo "" >> /etc/squid/squid.conf
+        echo "acl NCACHE method GET" >> /etc/squid/squid.conf
+        echo "no_cache deny NCACHE" >> /etc/squid/squid.conf
+        echo "" >> /etc/squid/squid.conf
+        echo "acl flash rep_mime_type application/x-shockwave-flash" >> /etc/squid/squid.conf
+        echo "http_reply_access deny flash" >> /etc/squid/squid.conf
+fi;
+
+# 设置 Squid Http 代理服务鸡开机自动启动
+systemctl enable squid ;
+
+# 启动 Squid Http 代理服务鸡
+systemctl start squid ;
+
+if [ -e "/gfw.press" ] ; then
+
+        echo ;
+        echo ==================================================;
+        echo ;
+        echo "目录 /gfw.press 已经存在，安装退出" ;
+        echo ;
+        echo "如需重新安装，请先把目录 /gfw.press 改名或删除" ;
+
+else
+
+        cd / ;
+        git clone https://github.com/chinashiyu/gfw.press.git ;
+
+        chmod a+x /gfw.press/server.sh ;
+        chmod a+x /gfw.press/stop.sh ;
+        chmod a+x /gfw.press/make_user.sh ;
+
+        /gfw.press/make_user.sh ;
+        rm -f /gfw.press/user.txt ;
+        cp /gfw.press/user.tx_ /gfw.press/user.txt ;
+
+        declare -i _mem ;
+        _mem=`free -m |grep Mem |awk '{print $2}'` ;
+        if (($_mem<600)); then
+                sed -i "s/-Xms512M/-Xms256M/g" /gfw.press/server.sh ;
+                sed -i "s/-Xmx512M/-Xmx256M/g" /gfw.press/server.sh ;
+        fi ;
+        if (($_mem>1800)); then
+                sed -i "s/-Xms512M/-Xms1024M/g" /gfw.press/server.sh ;
+                sed -i "s/-Xmx512M/-Xmx1024M/g" /gfw.press/server.sh ;
+        fi ;
+
+        # 设置 GFW.Press 服务器开机自动启动
+        sed -i "s/\/gfw.press\/server.sh//g" /etc/rc.d/rc.local
+        echo "/gfw.press/server.sh" >>  /etc/rc.d/rc.local
+
+        # 启动 GFW.Press 服务器
+        /gfw.press/server.sh
+
+        echo ;
+        echo ;
+        echo ==================================================;
+        echo ;
+        echo "恭喜你！已顺利完成 GFW.Press 服务器安装" ;
+        echo ;
+        echo "查看端口和密码请执行 more /gfw.press/user.txt " ;
+        echo ;
+        echo "手工启动服务器请执行 /gfw.press/server.sh " ;
+
+fi;
+
+echo ;
+echo ;
+
