@@ -92,8 +92,9 @@ else
         fi ;
 
         # 设置 GFW.Press 服务器开机自动启动
-        sed -i "s/\/gfw.press\/server.sh//g" /etc/rc.d/rc.local
-        echo "/gfw.press/server.sh" >>  /etc/rc.d/rc.local
+        sed -i "s/\/gfw.press\/server.sh//g" /etc/rc.d/rc.local ;
+        echo "/gfw.press/server.sh" >>  /etc/rc.d/rc.local ;
+        chmod +x /etc/rc.d/rc.local ;
 
         # 启动 GFW.Press 服务器
         /gfw.press/server.sh
