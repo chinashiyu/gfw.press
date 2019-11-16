@@ -1,6 +1,12 @@
 
 欢迎使用 GFW.Press 新一代军用级高强度加密抗干扰网络数据高速传输软件
 
+
+=========== 快速入门 =========================================
+
+
+一、安装服务器
+
 在 #Vultr 的 #CentOS8 服务鸡上安装翻墙大杀器
 
 先搞一个 #Vultr 服务鸡
@@ -12,6 +18,14 @@ yum install wget -y -q > /dev/null ;
 wget -q -O vultr_centos8.sh https://raw.githubusercontent.com/chinashiyu/gfw.press/master/vultr_centos8.sh.txt > /dev/null ;
 chmod a+x vultr_centos8.sh ;
 ./vultr_centos8.sh ;
+
+二、安装客户端
+
+https://github.com/chinashiyu/gfw.press/blob/master/%E4%BB%8E%E5%B0%8F%E7%99%BD%E5%88%B0%E5%A4%A7%E7%99%BD-GFW.Press%E5%A4%A7%E6%9D%80%E5%99%A8%E6%93%8D%E4%BD%9C%E6%8C%87%E5%8D%97.pdf
+
+
+=============================================================
+
 
 
 一、客户端
