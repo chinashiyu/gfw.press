@@ -21,7 +21,7 @@ chmod a+x vultr_centos8.sh ;
 
 二、安装客户端
 
-https://github.com/chinashiyu/gfw.press/blob/master/%E4%BB%8E%E5%B0%8F%E7%99%BD%E5%88%B0%E5%A4%A7%E7%99%BD-GFW.Press%E5%A4%A7%E6%9D%80%E5%99%A8%E6%93%8D%E4%BD%9C%E6%8C%87%E5%8D%97.pdf
+仔细阅读《从小白到大白-GFW.Press大杀器操作指南.pdf》
 
 
 =============================================================
