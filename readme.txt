@@ -2,6 +2,7 @@
 欢迎使用 GFW.Press 新一代军用级高强度加密抗干扰网络数据高速传输软件
 
 
+
 一、安装服务器
 
 在 #Vultr 的 #CentOS8 服务鸡上安装翻墙大杀器
@@ -40,6 +41,7 @@ https://gfw.press/download.php
 博客： https://gfw.press/blog/
 
 推特： https://twitter.com/chinashiyu
+
 
 
 祝您好运
