@@ -18,21 +18,21 @@ wget -q -O gfw.sh https://raw.githubusercontent.com/chinashiyu/gfw.press/master/
 sh gfw.sh ;
 
 
+
 二、安装客户端
 
-使用前请看《从小白到大白-GFW.Press大杀器操作指南.pdf》
+使用帮助：
+https://gfw.press/blog/?p=2047
 
-Windows 版: 
+Windows版下载: 
 https://gfw.press/GFW.Press.msi
 
-Android 版: 
+Android版下载: 
 https://gfw.press/GFW.Press.apk
 
 全部版本下载: 
 https://gfw.press/download.php
 
-快速入门帮助：
-https://gfw.press/blog/?p=2047
 
 
 官网： https://gfw.press/
