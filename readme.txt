@@ -11,7 +11,7 @@ https://gfw.press/blog/?p=2047
 
 在 Vultr 的 CentOS8 服务鸡上安装翻墙大杀器
 
-先搞一个 #Vultr 服务鸡
+先搞一个 Vultr 服务鸡
 https://www.vultr.com/?ref=7115062
 
 然后
