@@ -3,10 +3,13 @@
 欢迎使用 GFW.Press 新一代军用级高强度加密抗干扰网络数据高速传输软件
 
 
+快速入门帮助：
+https://gfw.press/blog/?p=2047
+
 
 一、安装服务器
 
-在 #Vultr 的 #CentOS8 服务鸡上安装翻墙大杀器
+在 Vultr 的 CentOS8 服务鸡上安装翻墙大杀器
 
 先搞一个 #Vultr 服务鸡
 https://www.vultr.com/?ref=7115062
@@ -22,9 +25,6 @@ sh gfw.sh ;
 
 
 二、安装客户端
-
-使用帮助：
-https://gfw.press/blog/?p=2047
 
 Windows版下载: 
 https://gfw.press/GFW.Press.msi
