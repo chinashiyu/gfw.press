@@ -10,8 +10,7 @@ echo 'LC_ALL="zh_CN.UTF-8"' >> /etc/locale.conf ;
 
 
 # 配置防火墙
-firewall-cmd --zone=public --add-port=10000-30000/tcp --permanent > /dev/null ;
-firewall-cmd --reload > /dev/null ;
+if [ "`firewall-cmd --query-port=10000-30000/tcp --permanent`" == "no" ]; then firewall-cmd --add-port=10000-30000/tcp  --permanent > /dev/null 2>&1 ; firewall-cmd --reload > /dev/null 2>&1 ; fi ;
 
 # 安装增强软件库
 yum install elrepo-release -y  -q > /dev/null ;
@@ -52,14 +51,46 @@ if [ -e "/etc/squid/squid.conf" ] ; then
         echo "http_reply_access deny flash" >> /etc/squid/squid.conf
 fi;
 
-# 优化网络设置
-if [ "`grep net.ipv4.tcp_congestion_control=bbr /etc/sysctl.conf`" == "" ]; then
-        echo 'net.core.default_qdisc=fq' >> /etc/sysctl.conf ;
-        echo 'net.ipv4.tcp_congestion_control=bbr' >> /etc/sysctl.conf ;
-        sysctl -p > /dev/null 2>&1 ;
-        tuned-adm profile network-latency > /dev/null 2>&1 ;
-fi ;
+# 优化系统
+echo > /etc/security/limits.d/99-perf.conf ;
+echo '* soft nproc 65536' >> /etc/security/limits.d/99-perf.conf ;
+echo '* hard nproc 65536' >> /etc/security/limits.d/99-perf.conf ;
+echo '* soft nofile 65536' >> /etc/security/limits.d/99-perf.conf ;
+echo '* hard nofile 65536' >> /etc/security/limits.d/99-perf.conf ;
 
+echo > /etc/sysctl.d/99-perf.conf ;
+echo 'net.ipv4.tcp_congestion_control=bbr' >> /etc/sysctl.d/99-perf.conf ;
+echo 'net.ipv4.tcp_low_latency=1' >> /etc/sysctl.d/99-perf.conf ;
+echo 'net.core.default_qdisc=fq' >> /etc/sysctl.d/99-perf.conf ;
+echo 'net.core.netdev_max_backlog=100000' >> /etc/sysctl.d/99-perf.conf ;
+echo 'net.core.netdev_budget=50000' >> /etc/sysctl.d/99-perf.conf ;
+echo 'net.core.netdev_budget_usecs=5000' >> /etc/sysctl.d/99-perf.conf ;
+echo 'net.core.somaxconn=1024' >> /etc/sysctl.d/99-perf.conf ;
+echo 'net.core.rmem_default=1048576' >> /etc/sysctl.d/99-perf.conf ;
+echo 'net.core.rmem_max=16777216' >> /etc/sysctl.d/99-perf.conf ;
+echo 'net.core.wmem_default=1048576' >> /etc/sysctl.d/99-perf.conf ;
+echo 'net.core.wmem_max=16777216' >> /etc/sysctl.d/99-perf.conf ;
+echo 'net.core.optmem_max=65536' >> /etc/sysctl.d/99-perf.conf ;
+echo 'net.ipv4.tcp_rmem=4096 1048576 2097152' >> /etc/sysctl.d/99-perf.conf ;
+echo 'net.ipv4.tcp_wmem=4096 65536 16777216' >> /etc/sysctl.d/99-perf.conf ;
+echo 'net.ipv4.udp_rmem_min=8192' >> /etc/sysctl.d/99-perf.conf ;
+echo 'net.ipv4.udp_wmem_min=8192' >> /etc/sysctl.d/99-perf.conf ;
+echo 'net.ipv4.tcp_max_syn_backlog=30000' >> /etc/sysctl.d/99-perf.conf ;
+echo 'net.ipv4.tcp_max_tw_buckets=2000000' >> /etc/sysctl.d/99-perf.conf ;
+echo 'net.ipv4.tcp_tw_reuse=1' >> /etc/sysctl.d/99-perf.conf ;
+echo 'net.ipv4.tcp_fin_timeout=10' >> /etc/sysctl.d/99-perf.conf ;
+echo 'net.ipv4.tcp_slow_start_after_idle=0' >> /etc/sysctl.d/99-perf.conf ;
+echo 'net.ipv4.tcp_keepalive_time=60' >> /etc/sysctl.d/99-perf.conf ;
+echo 'net.ipv4.tcp_keepalive_intvl=10' >> /etc/sysctl.d/99-perf.conf ;
+echo 'net.ipv4.tcp_keepalive_probes=6' >> /etc/sysctl.d/99-perf.conf ;
+echo 'net.ipv4.tcp_mtu_probing=1' >> /etc/sysctl.d/99-perf.conf ;
+echo 'net.ipv4.tcp_timestamps=0' >> /etc/sysctl.d/99-perf.conf ;
+echo 'net.ipv4.tcp_syncookies=1' >> /etc/sysctl.d/99-perf.conf ;
+echo 'net.ipv4.tcp_rfc1337=1' >> /etc/sysctl.d/99-perf.conf ;
+
+sysctl -p /etc/sysctl.d/99-perf.conf > /dev/null 2>&1 ;
+
+tuned-adm profile network-latency > /dev/null 2>&1 ;
 
 # 设置 Squid Http 代理服务鸡开机自动启动
 systemctl enable squid ;
@@ -121,4 +152,3 @@ fi;
 
 echo ;
 echo ;
-
