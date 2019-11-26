@@ -4,6 +4,11 @@ echo 正在安装 GFW.Press 服务器，请稍候.......... ;
 echo ;
 
 cd / ;
+# 安装增强软件库
+yum install elrepo-release -y  -q > /dev/null ;
+yum install epel-release -y  -q > /dev/null ;
+yum install pwgen -y  -q > /dev/null ;
+
 yum install java-1.8.0-openjdk-devel  -y -q > /dev/null ;
 yum install squid -y -q > /dev/null ;
 if [ -e "/etc/squid/squid.conf" ] ; then
