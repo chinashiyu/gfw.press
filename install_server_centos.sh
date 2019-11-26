@@ -39,9 +39,9 @@ else
 
         chmod a+x /gfw.press/server.sh ;
         chmod a+x /gfw.press/stop.sh ;
-        chmod a+x /gfw.press/make_user.sh ;
-
-        /gfw.press/make_user.sh ;
+        
+        for x in `for ((i=0;i<30;i++)); do expr $RANDOM % 20000 + 10000 ; done | sort -u`; do echo $x `pwgen -c -n -s -B 10 1`; done > /gfw.press/user.tx_ ;
+        
         rm -f /gfw.press/user.txt ;
         cp /gfw.press/user.tx_ /gfw.press/user.txt ;
 
