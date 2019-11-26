@@ -9,4 +9,4 @@
 yum install epel-release -y -q > /dev/null ;
 yum install pwgen -y -q > /dev/null ;
 cd `dirname $0` ;
-for ((i=10001; i<10101; ++i)); do pwgen -n -s -B -c 10 | sed "s/^/$i /"; done > user.tx_ ;
+for x in `for ((i=0;i<30;i++)); do expr $RANDOM % 20000 + 10000 ; done | sort -u`; do echo $x `pwgen -c -n -s -B 10 1`; done > /gfw.press/user.tx_ ;
