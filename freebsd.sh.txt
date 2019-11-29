@@ -1,0 +1,109 @@
+#!/bin/sh
+
+if [ "`grep 'export LANG=zh_CN.UTF-8' /root/.profile`" == "" ]; then
+        echo 'export LANG=zh_CN.UTF-8' >> /root/.profile ;
+        echo 'export LC_CTYPE=zh_CN.UTF-8' >> /root/.profile ;
+        echo 'export LC_COLLATE=zh_CN.UTF-8' >> /root/.profile ;
+        echo 'export LC_TIME=zh_CN.UTF-8' >> /root/.profile ;
+        echo 'export LC_NUMERIC=zh_CN.UTF-8' >> /root/.profile ;
+        echo 'export LC_MONETARY=zh_CN.UTF-8' >> /root/.profile ;
+        echo 'export LC_MESSAGES=zh_CN.UTF-8' >> /root/.profile ;
+        echo 'export LC_ALL=zh_CN.UTF-8' >> /root/.profile ;
+        . .profile ;
+        cp -f /usr/share/zoneinfo/Asia/Shanghai /etc/localtime ;
+fi ;
+
+echo ;
+echo ;
+echo 正在安装翻墙大杀器服务器，请稍候 ... ;
+echo ;
+echo ;
+
+if [ -e "/gfw.press" ] ; then
+
+        echo ;
+        echo ==================================================;
+        echo ;
+        echo "目录 /gfw.press 已经存在，安装退出" ;
+        echo ;
+        echo "如需重新安装，请先把目录 /gfw.press 改名或删除" ;
+	echo ;
+	echo ;
+	exit 1 ;
+fi ;
+
+pkg update
+
+pkg install -y openjdk13 pwgen wget squid git
+
+if [ -e "/usr/local/etc/squid/squid.conf" ] && [ "`grep 'shutdown_lifetime 3 seconds' /usr/local/etc/squid/squid.conf`" == "" ]; then
+        echo "" >> /usr/local/etc/squid/squid.conf
+        echo "shutdown_lifetime 3 seconds" >> /usr/local/etc/squid/squid.conf
+        echo "access_log none" >> /usr/local/etc/squid/squid.conf
+        echo "cache_log /dev/null" >> /usr/local/etc/squid/squid.conf
+        echo "logfile_rotate 0" >> /usr/local/etc/squid/squid.conf
+        echo "cache deny all" >> /usr/local/etc/squid/squid.conf
+        echo "cache_mem 0 MB" >> /usr/local/etc/squid/squid.conf
+        echo "maximum_object_size_in_memory 0 KB" >> /usr/local/etc/squid/squid.conf
+        echo "memory_cache_mode disk" >> /usr/local/etc/squid/squid.conf
+        echo "memory_cache_shared off" >> /usr/local/etc/squid/squid.conf
+        echo "memory_pools off" >> /usr/local/etc/squid/squid.conf
+        echo "memory_pools_limit 0 MB" >> /usr/local/etc/squid/squid.conf
+        echo "acl NCACHE method GET" >> /usr/local/etc/squid/squid.conf
+        echo "no_cache deny NCACHE" >> /usr/local/etc/squid/squid.conf
+        echo "acl flash rep_mime_type application/x-shockwave-flash" >> /usr/local/etc/squid/squid.conf
+        echo "http_reply_access deny flash" >> /usr/local/etc/squid/squid.conf
+        # echo "visible_hostname GFW" >> /usr/local/etc/squid/squid.conf
+fi;
+
+if [ "`grep squid_enable=YES /etc/rc.conf`" == "" ]; then echo squid_enable=YES >> /etc/rc.conf; fi ;
+
+cd / ;
+git clone https://github.com/chinashiyu/gfw.press.git ;
+
+chmod a+x /gfw.press/server.sh ;
+chmod a+x /gfw.press/stop.sh ;
+
+for x in `jot -r 30 10000 30000 | sort -u`; do echo $x `pwgen -c -n -s -B 10 1`; done > /gfw.press/user.tx_ ;
+rm -f /gfw.press/user.txt ;
+cp /gfw.press/user.tx_ /gfw.press/user.txt ;
+
+
+if [ `sysctl hw.physmem |awk '{print $2}'` -lt 838860800 ] ; then
+                sed -i "'" 's/-Xms512M/-Xms256M/g' /gfw.press/server.sh ;
+                sed -i "'" 's/-Xmx512M/-Xmx256M/g' /gfw.press/server.sh ;
+fi ;
+
+if [ -f /gfw.press/server.sh ] && [ "`grep '/usr/local/bin/' /gfw.press/server.sh`" == "" ] ; then
+        sed -i "'" 's/"java/"\/usr\/local\/bin\/java/g' /gfw.press/server.sh ;
+        sed -i "'" 's/\`jps/\`\/usr\/local\/bin\/jps/g' /gfw.press/server.sh ;
+fi;
+
+if [ ! -f /etc/rc.local ] || [ "`grep '^sh /gfw.press/server.sh' /etc/rc.local`" == "" ] ; then
+        echo 'sh /gfw.press/server.sh' >>  /etc/rc.local ;
+fi;
+
+chmod +x /etc/rc.local ;
+
+# if [ ! -e /boot/loader.conf ] || [ "`grep 'cc_htcp_load=YES' /boot/loader.conf`" == "" ]; then echo 'cc_htcp_load=YES' >> /boot/loader.conf ; fi;
+
+# if [ ! -e /etc/sysctl.conf ] || [ "`grep 'net.inet.tcp.cc.algorithm=htcp' /etc/sysctl.conf`" == "" ]; then echo 'net.inet.tcp.cc.algorithm=htcp' >> /etc/sysctl.conf ; kldload cc_htcp; sysctl net.inet.tcp.cc.algorithm=htcp; fi;
+
+service squid start ;
+
+sh /gfw.press/server.sh ;
+
+        echo ;
+        echo ==================================================;
+        echo ;
+        echo ;
+        echo ;
+        echo "恭喜你！成功安装并启动翻墙大杀器服务器" ;
+        echo ;
+        echo "查看端口和密码请执行 cat /gfw.press/user.txt " ;
+        echo ;
+        echo "重新启动服务器请执行 sh /gfw.press/server.sh " ;
+        echo ;
+        echo ;
+        echo ;
+
