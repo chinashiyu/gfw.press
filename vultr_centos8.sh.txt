@@ -1,57 +1,85 @@
+#!/bin/sh
+
 echo ;
 echo ;
-echo 正在安装 GFW.Press 服务器，请稍候.......... ;
+echo 正在安装翻墙大杀器服务，请稍候 ... ;
 echo ;
 
-# 安装设置语言环境
-yum install langpacks-zh_CN -y   -q > /dev/null ;
+
+if [ -e "/gfw.press" ] ; then
+        echo ;
+        echo "目录 /gfw.press 已经存在，安装退出" ;
+        echo ;
+        echo "如需重新安装，请先把目录 /gfw.press 改名或删除" ;
+        echo ;
+        echo ;
+	exit 1 ;
+fi;
+
+
+# 安装增强软件库
+echo -n ▋▋  ;
+yum install elrepo-release -y  -q > /dev/null 2>&1 ;
+yum install epel-release -y  -q > /dev/null 2>&1 ;
+yum install update -y  -q > /dev/null 2>&1 ;
+
+
+# 安装语言环境
+echo -n ▋▋  ;
+yum install langpacks-zh_CN -y   -q > /dev/null 2>&1 ;
 echo 'LANG="zh_CN.UTF-8"' > /etc/locale.conf ;
 echo 'LC_ALL="zh_CN.UTF-8"' >> /etc/locale.conf ;
 
 
-# 配置防火墙
-if [ "`firewall-cmd --query-port=10000-30000/tcp --permanent`" == "no" ]; then firewall-cmd --add-port=10000-30000/tcp  --permanent > /dev/null 2>&1 ; firewall-cmd --reload > /dev/null 2>&1 ; fi ;
-
-# 安装增强软件库
-yum install elrepo-release -y  -q > /dev/null ;
-yum install epel-release -y  -q > /dev/null ;
-
 # 安装密码生成鸡
-yum install pwgen -y  -q > /dev/null ;
+echo -n ▋▋  ;
+yum install pwgen -y  -q > /dev/null 2>&1 ;
+
 
 # 安装 Java 虚拟鸡
-yum install java-1.8.0-openjdk-devel -y  -q > /dev/null ;
+echo -n ▋▋  ;
+yum install java-latest-openjdk-devel -y  -q > /dev/null 2>&1 ;
+
 
 # 安装 Git 源代码管理鸡
-yum install git -y  -q > /dev/null ;
+echo -n ▋▋  ;
+yum install git -y  -q > /dev/null 2>&1 ;
 
-# 安装 Squid Http 代理服务鸡
-yum install squid -y  -q > /dev/null ;
 
-# 优化 Squid Http 代理服务鸡配置
-if [ -e "/etc/squid/squid.conf" ] ; then
+# 安装 Squid 代理服务鸡
+echo -n ▋▋  ;
+yum install squid -y  -q > /dev/null 2>&1 ;
+
+
+# 配置防火墙
+echo -n ▋▋  ;
+if [ "`firewall-cmd --query-port=10000-30000/tcp --permanent`" == "no" ]; then firewall-cmd --add-port=10000-30000/tcp  --permanent > /dev/null 2>&1 ; firewall-cmd --reload > /dev/null 2>&1 ; fi ;
+
+
+# 优化 Squid 代理服务鸡
+echo -n ▋▋  ;
+if [ -e "/etc/squid/squid.conf" ] && [ "`grep 'shutdown_lifetime 3 seconds' /etc/squid/squid.conf`" == "" ]; then
         echo "" >> /etc/squid/squid.conf
         echo "shutdown_lifetime 3 seconds" >> /etc/squid/squid.conf
         echo "access_log none" >> /etc/squid/squid.conf
         echo "cache_log /dev/null" >> /etc/squid/squid.conf
         echo "logfile_rotate 0" >> /etc/squid/squid.conf
         echo "cache deny all" >> /etc/squid/squid.conf
-        echo "" >> /etc/squid/squid.conf
         echo "cache_mem 0 MB" >> /etc/squid/squid.conf
         echo "maximum_object_size_in_memory 0 KB" >> /etc/squid/squid.conf
         echo "memory_cache_mode disk" >> /etc/squid/squid.conf
         echo "memory_cache_shared off" >> /etc/squid/squid.conf
         echo "memory_pools off" >> /etc/squid/squid.conf
         echo "memory_pools_limit 0 MB" >> /etc/squid/squid.conf
-        echo "" >> /etc/squid/squid.conf
         echo "acl NCACHE method GET" >> /etc/squid/squid.conf
         echo "no_cache deny NCACHE" >> /etc/squid/squid.conf
-        echo "" >> /etc/squid/squid.conf
         echo "acl flash rep_mime_type application/x-shockwave-flash" >> /etc/squid/squid.conf
         echo "http_reply_access deny flash" >> /etc/squid/squid.conf
 fi;
 
+
 # 优化系统
+echo -n ▋▋  ;
 echo > /etc/security/limits.d/99-perf.conf ;
 echo '* soft nproc 65536' >> /etc/security/limits.d/99-perf.conf ;
 echo '* hard nproc 65536' >> /etc/security/limits.d/99-perf.conf ;
@@ -66,32 +94,28 @@ sysctl -p /etc/sysctl.d/99-perf.conf > /dev/null 2>&1 ;
 
 tuned-adm profile network-latency > /dev/null 2>&1 ;
 
-# 设置 Squid Http 代理服务鸡开机自动启动
-systemctl enable squid ;
 
-# 启动 Squid Http 代理服务鸡
-systemctl start squid ;
+# 设置 Squid 代理服务鸡开机启动
+echo -n ▋▋  ;
+systemctl enable squid > /dev/null 2>&1 ;
 
-if [ -e "/gfw.press" ] ; then
 
-        echo ;
-        echo ==================================================;
-        echo ;
-        echo "目录 /gfw.press 已经存在，安装退出" ;
-        echo ;
-        echo "如需重新安装，请先把目录 /gfw.press 改名或删除" ;
+# 启动 Squid 代理服务鸡
+echo -n ▋▋  ;
+systemctl start squid > /dev/null 2>&1 ;
 
-else
 
-        cd / ;
-        git clone https://github.com/chinashiyu/gfw.press.git ;
+        # 下载和设置翻墙大杀器程序
+        echo -n ▋▋  ;
+        cd /  > /dev/null 2>&1 ;
+        git clone -q https://github.com/chinashiyu/gfw.press.git > /dev/null 2>&1 ;
 
-        chmod a+x /gfw.press/server.sh ;
-        chmod a+x /gfw.press/stop.sh ;
+        chmod a+x /gfw.press/server.sh  > /dev/null 2>&1 ;
+        chmod a+x /gfw.press/stop.sh  > /dev/null 2>&1 ;
 
         for x in `for ((i=0;i<30;i++)); do expr $RANDOM % 20000 + 10000 ; done | sort -u`; do echo $x `pwgen -c -n -s -B 10 1`; done > /gfw.press/user.tx_ ;
-        rm -f /gfw.press/user.txt ;
-        cp /gfw.press/user.tx_ /gfw.press/user.txt ;
+        rm -f /gfw.press/user.txt  > /dev/null 2>&1 ;
+        cp /gfw.press/user.tx_ /gfw.press/user.txt  > /dev/null 2>&1 ;
 
         declare -i _mem ;
         _mem=`free -m |grep Mem |awk '{print $2}'` ;
@@ -104,25 +128,27 @@ else
                 sed -i "s/-Xmx512M/-Xmx1024M/g" /gfw.press/server.sh ;
         fi ;
 
-        # 设置 GFW.Press 服务器开机自动启动
+
+        # 设置翻墙大杀器服务开机启动
+        echo -n ▋▋  ;
         sed -i "s/\/gfw.press\/server.sh//g" /etc/rc.d/rc.local ;
         echo "/gfw.press/server.sh" >>  /etc/rc.d/rc.local ;
         chmod +x /etc/rc.d/rc.local ;
 
-        # 启动 GFW.Press 服务器
+
+        # 启动翻墙大杀器服务
+        echo -n ▋▋  ;
         /gfw.press/server.sh
 
         echo ;
         echo ;
-        echo ==================================================;
+        echo "恭喜你！已成功安装并启动翻墙大杀器服务" ;
         echo ;
-        echo "恭喜你！已顺利完成 GFW.Press 服务器安装" ;
+        echo "查看端口密码请执行 cat /gfw.press/user.txt " ;
         echo ;
-        echo "查看端口和密码请执行 more /gfw.press/user.txt " ;
-        echo ;
-        echo "手工启动服务器请执行 /gfw.press/server.sh " ;
+        echo "重新启动服务请执行 /gfw.press/server.sh " ;
 
-fi;
 
 echo ;
 echo ;
+
