@@ -8,13 +8,23 @@
 
 第一步、安装服务器
 
-创建一个 CentOS8 服务器
+首先创建一个 CentOS 8 、 Ubuntu 19 或者 FreeBSD 12 云服务器
 
 https://www.vultr.com/?ref=7115062
 
-一键安装
+然后执行一键安装命令：
 
-yum install wget -y -q ; wget -q -O gfw.sh https://raw.githubusercontent.com/chinashiyu/gfw.press/master/vultr_centos8.sh.txt ; sh gfw.sh
+# CentOS 8 使用
+
+yum install wget -y -q ; wget -q -O gfw https://raw.githubusercontent.com/chinashiyu/gfw.press/master/vultr_centos8.sh.txt ; sh gfw
+
+# Ubuntu 19 使用
+
+apt -y -q install wget ; wget -q -O gfw https://raw.githubusercontent.com/chinashiyu/gfw.press/master/ubuntu.sh.txt ; sh gfw
+
+# FreeBSD 12 使用
+
+pkg install -y wget ; wget -q -O gfw https://raw.githubusercontent.com/chinashiyu/gfw.press/master/freebsd.sh.txt ; sh gfw
 
 
 第二步、安装客户端
