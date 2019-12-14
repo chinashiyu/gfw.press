@@ -89,6 +89,10 @@ echo '* hard nofile 65536' >> /etc/security/limits.d/99-perf.conf ;
 echo > /etc/sysctl.d/99-perf.conf ;
 echo 'net.ipv4.tcp_congestion_control=bbr' >> /etc/sysctl.d/99-perf.conf ;
 echo 'net.core.default_qdisc=fq' >> /etc/sysctl.d/99-perf.conf ;
+echo 'net.core.rmem_max=134217728' >> /etc/sysctl.d/99-perf.conf ;
+echo 'net.core.wmem_max=134217728' >> /etc/sysctl.d/99-perf.conf ;
+echo 'net.core.somaxconn=1024' >> /etc/sysctl.d/99-perf.conf ;
+echo 'net.core.netdev_max_backlog=1048576' >> /etc/sysctl.d/99-perf.conf ;
 
 sysctl -p /etc/sysctl.d/99-perf.conf > /dev/null 2>&1 ;
 
