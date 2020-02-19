@@ -1,0 +1,154 @@
+#!/bin/sh
+
+echo ;
+echo ;
+echo 正在安装翻墙大杀器服务，请稍候 ... ;
+echo ;
+
+
+if [ -e "/gfw.press" ] ; then
+        echo ;
+        echo "目录 /gfw.press 已经存在，安装退出" ;
+        echo ;
+        echo "如需重新安装，请先把目录 /gfw.press 改名或删除" ;
+        echo ;
+        echo ;
+        exit 1 ;
+fi;
+
+if [ ! -f  ~/.vimrc ] || [ "`grep '^:set compatible' ~/.vimrc`" = "" ]; then echo ':set compatible' >> ~/.vimrc ; fi ;
+
+# 更新系统
+echo -n ▋▋  ;
+if [ "`grep '^deb http://deb.debian.org/debian/ sid main' /etc/apt/sources.list`" = "" ]; then echo 'deb http://deb.debian.org/debian/ sid main' >> /etc/apt/sources.list ; fi ;
+export DEBIAN_FRONTEND=noninteractive > /dev/null 2>&1 ;
+apt-get -y -q update  > /dev/null 2>&1 ;
+
+
+# 安装软件
+echo -n ▋▋  ;
+apt -y -q install  wget openjdk-13-jdk pwgen git squid net-tools task-chinese-s locales-all tuned athena-jot ufw > /dev/null 2>&1 ;
+
+
+# 设置语言环境
+echo -n ▋▋  ;
+locale-gen "zh_CN.UTF-8"   > /dev/null 2>&1 ;
+echo 'LANG="zh_CN.UTF-8"' > /etc/default/locale ;
+echo 'LC_ALL="zh_CN.UTF-8"' >> /etc/default/locale ;
+echo 'LANGUAGE="zh_CN:zh"' >> /etc/default/locale ;
+update-locale  > /dev/null 2>&1 ;
+export LANG="zh_CN.UTF-8"  > /dev/null 2>&1 ;
+export LC_ALL="zh_CN.UTF-8"  > /dev/null 2>&1 ;
+export LANGUAGE="zh_CN:zh"  > /dev/null 2>&1 ;
+cp -f /usr/share/zoneinfo/Asia/Shanghai /etc/localtime   > /dev/null 2>&1 ;
+
+
+# 配置防火墙
+echo -n ▋▋  ;
+ufw allow 10000:30000/tcp  > /dev/null 2>&1 ;
+
+
+# 优化 Squid 代理服务鸡
+echo -n ▋▋  ;
+if [ -e "/etc/squid/squid.conf" ] && [ "`grep 'shutdown_lifetime 3 seconds' /etc/squid/squid.conf`" = "" ]; then
+        echo "" >> /etc/squid/squid.conf
+        echo "shutdown_lifetime 3 seconds" >> /etc/squid/squid.conf
+        echo "access_log none" >> /etc/squid/squid.conf
+        echo "cache_log /dev/null" >> /etc/squid/squid.conf
+        echo "logfile_rotate 0" >> /etc/squid/squid.conf
+        echo "cache deny all" >> /etc/squid/squid.conf
+        echo "cache_mem 0 MB" >> /etc/squid/squid.conf
+        echo "maximum_object_size_in_memory 0 KB" >> /etc/squid/squid.conf
+        echo "memory_cache_mode disk" >> /etc/squid/squid.conf
+        echo "memory_cache_shared off" >> /etc/squid/squid.conf
+        echo "memory_pools off" >> /etc/squid/squid.conf
+        echo "memory_pools_limit 0 MB" >> /etc/squid/squid.conf
+        echo "acl NCACHE method GET" >> /etc/squid/squid.conf
+        echo "no_cache deny NCACHE" >> /etc/squid/squid.conf
+        echo "acl flash rep_mime_type application/x-shockwave-flash" >> /etc/squid/squid.conf
+        echo "http_reply_access deny flash" >> /etc/squid/squid.conf
+fi;
+
+
+# 优化系统
+echo -n ▋▋  ;
+echo > /etc/security/limits.d/99-perf.conf ;
+echo '* soft nproc 65536' >> /etc/security/limits.d/99-perf.conf ;
+echo '* hard nproc 65536' >> /etc/security/limits.d/99-perf.conf ;
+echo '* soft nofile 65536' >> /etc/security/limits.d/99-perf.conf ;
+echo '* hard nofile 65536' >> /etc/security/limits.d/99-perf.conf ;
+
+echo > /etc/sysctl.d/99-perf.conf ;
+echo 'net.ipv4.tcp_congestion_control=bbr' >> /etc/sysctl.d/99-perf.conf ;
+echo 'net.core.default_qdisc=fq' >> /etc/sysctl.d/99-perf.conf ;
+echo 'net.core.rmem_max=134217728' >> /etc/sysctl.d/99-perf.conf ;
+echo 'net.core.wmem_max=134217728' >> /etc/sysctl.d/99-perf.conf ;
+echo 'net.core.somaxconn=1024' >> /etc/sysctl.d/99-perf.conf ;
+echo 'net.core.netdev_max_backlog=1048576' >> /etc/sysctl.d/99-perf.conf ;
+
+sysctl -p /etc/sysctl.d/99-perf.conf > /dev/null 2>&1 ;
+
+systemctl enable tuned > /dev/null 2>&1 ;
+systemctl start tuned > /dev/null 2>&1 ;
+tuned-adm profile network-latency > /dev/null 2>&1 ;
+
+
+# 设置 Squid 代理服务鸡开机启动
+echo -n ▋▋  ;
+systemctl enable squid > /dev/null 2>&1 ;
+
+
+# 启动 Squid 代理服务鸡
+echo -n ▋▋  ;
+systemctl stop squid > /dev/null 2>&1 ;
+systemctl start squid > /dev/null 2>&1 ;
+
+
+        # 下载和设置翻墙大杀器程序
+        echo -n ▋▋  ;
+        cd /  > /dev/null 2>&1 ;
+        git clone -q https://github.com/chinashiyu/gfw.press.git > /dev/null 2>&1 ;
+
+        chmod a+x /gfw.press/server.sh  > /dev/null 2>&1 ;
+        chmod a+x /gfw.press/stop.sh  > /dev/null 2>&1 ;
+
+        for x in `jot -r 30 10000 30000 | sort -u`; do echo $x `pwgen -c -n -s -B 10 1`; done > /gfw.press/user.tx_ ;
+        rm -f /gfw.press/user.txt  > /dev/null 2>&1 ;
+        cp /gfw.press/user.tx_ /gfw.press/user.txt  > /dev/null 2>&1 ;
+
+if [ `free -m|head -n 2|tail -n 1 | awk '{print $2}'` -lt 800 ] ; then
+                sed -i  's/-Xms512M/-Xms256M/g' /gfw.press/server.sh ;
+                sed -i  's/-Xmx512M/-Xmx256M/g' /gfw.press/server.sh ;
+fi ;
+
+
+ # 设置翻墙大杀器服务开机启动
+echo -n ▋▋  ;
+if [ ! -e /etc/rc.local ]; then
+        echo >  /etc/rc.local ;
+fi;
+if [ "`head -n 1 /etc/rc.local | grep '^#!/'`" = "" ]; then
+        sed -i '1 i\#!/bin/sh' /etc/rc.local
+fi;
+if [ "`grep '^sh /gfw.press/server.sh' /etc/rc.local`" = "" ]; then
+        echo "sh /gfw.press/server.sh" >>  /etc/rc.local ;
+fi;
+chmod +x /etc/rc.local ;
+
+
+        # 启动翻墙大杀器服务
+        echo -n ▋▋  ;
+        /gfw.press/server.sh
+
+        echo ;
+        echo ;
+        echo "恭喜你！已成功安装并启动翻墙大杀器服务" ;
+        echo ;
+        echo "查看端口密码请执行 cat /gfw.press/user.txt " ;
+        echo ;
+        echo "重新启动服务请执行 /gfw.press/server.sh " ;
+
+
+echo ;
+echo ;
+
