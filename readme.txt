@@ -8,7 +8,7 @@
 
 第一步、安装服务器
 
-首先创建一个 CentOS 8 、 Ubuntu 19 或者 FreeBSD 12 云服务器
+首先创建一个 CentOS 8 、 Ubuntu 19 、 Debian 10 或者 FreeBSD 12 云服务器
 
 https://www.vultr.com/?ref=7115062
 
@@ -25,6 +25,10 @@ apt -y -q install wget ; wget -q -O gfw https://raw.githubusercontent.com/chinas
 # FreeBSD 12 使用
 
 pkg install -y wget ; wget -q -O gfw https://raw.githubusercontent.com/chinashiyu/gfw.press/master/freebsd.sh.txt ; sh gfw
+
+# Debian 10 使用
+
+apt -y -q install wget ; wget -q -O gfw https://raw.githubusercontent.com/chinashiyu/gfw.press/master/debian.sh.txt ; sh gfw
 
 
 第二步、安装客户端
