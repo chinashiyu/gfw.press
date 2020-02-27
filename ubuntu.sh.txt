@@ -20,6 +20,7 @@ fi;
 
 # 更新系统
 echo -n ▋▋  ;
+apt-get -y update  > /dev/null 2>&1 ;
 apt -y -q upgrade  > /dev/null 2>&1 ;
 
 
