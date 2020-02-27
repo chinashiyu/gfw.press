@@ -20,8 +20,8 @@ fi;
 # 安装增强软件库
 echo -n ▋▋  ;
 yum install elrepo-release -y  -q > /dev/null 2>&1 ;
-yum install epel-release -y  -q > /dev/null 2>&1 ;
-yum install update -y  -q > /dev/null 2>&1 ;
+yum install epel-release net-tools -y  -q > /dev/null 2>&1 ;
+yum update -y  -q > /dev/null 2>&1 ;
 
 
 # 安装语言环境
