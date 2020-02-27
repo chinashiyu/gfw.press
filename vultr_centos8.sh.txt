@@ -20,7 +20,7 @@ fi;
 # 安装增强软件库
 echo -n ▋▋  ;
 yum install elrepo-release -y  -q > /dev/null 2>&1 ;
-yum install epel-release net-tools -y  -q > /dev/null 2>&1 ;
+yum install epel-release -y  -q > /dev/null 2>&1 ;
 yum update -y  -q > /dev/null 2>&1 ;
 
 
@@ -33,7 +33,7 @@ echo 'LC_ALL="zh_CN.UTF-8"' >> /etc/locale.conf ;
 
 # 安装密码生成鸡
 echo -n ▋▋  ;
-yum install pwgen -y  -q > /dev/null 2>&1 ;
+yum install pwgen net-tools -y  -q > /dev/null 2>&1 ;
 
 
 # 安装 Java 虚拟鸡
