@@ -110,8 +110,6 @@ function setupSystem() {
 	echo 'net.ipv4.tcp_syncookies = 1' >> /etc/sysctl.d/99-perf.conf
 	echo 'net.ipv4.tcp_max_syn_backlog = 4096' >> /etc/sysctl.d/99-perf.conf
 	echo 'net.ipv4.tcp_synack_retries = 3' >> /etc/sysctl.d/99-perf.conf
-	echo 'net.ipv4.netfilter.ip_conntrack_tcp_timeout_syn_recv = 45' >> /etc/sysctl.d/99-perf.conf
-	echo 'net.ipv4.conf.all.rp_filter = 1' >> /etc/sysctl.d/99-perf.conf
 
 	sysctl -q --system > /dev/null 2>&1
 
