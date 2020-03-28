@@ -10,7 +10,7 @@
 
 购买一个 5 美元的 CentOS 8 、 Ubuntu 19 、 Debian 10 或者 FreeBSD 12 云服务器
 
-https://www.vultr.com/?ref=7115062
+购买地址 https://www.vultr.com/?ref=7115062
 
 然后执行一键安装命令：
 
