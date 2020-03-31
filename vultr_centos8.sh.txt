@@ -96,15 +96,15 @@ function setupSystem() {
 	echo 'net.core.netdev_max_backlog = 1048576' >> /etc/sysctl.d/99-perf.conf
 
 	echo 'net.core.rmem_default = 262144' >> /etc/sysctl.d/99-perf.conf
-	echo 'net.core.rmem_max = 33554432' >> /etc/sysctl.d/99-perf.conf
+	echo 'net.core.rmem_max = 134217728' >> /etc/sysctl.d/99-perf.conf
 	echo 'net.core.wmem_default = 262144' >> /etc/sysctl.d/99-perf.conf
-	echo 'net.core.wmem_max = 2097152' >> /etc/sysctl.d/99-perf.conf
-	echo 'net.ipv4.tcp_mem = 8192 16384 32768' >> /etc/sysctl.d/99-perf.conf
-	echo 'net.ipv4.tcp_rmem = 8192 131072 4194304' >> /etc/sysctl.d/99-perf.conf
-	echo 'net.ipv4.tcp_wmem = 8192 131072 4194304' >> /etc/sysctl.d/99-perf.conf
-	echo 'net.ipv4.udp_mem = 16384 32768 65536' >> /etc/sysctl.d/99-perf.conf
-	echo 'net.ipv4.udp_rmem_min = 8192' >> /etc/sysctl.d/99-perf.conf
-	echo 'net.ipv4.udp_wmem_min = 8192' >> /etc/sysctl.d/99-perf.conf
+	echo 'net.core.wmem_max = 134217728' >> /etc/sysctl.d/99-perf.conf
+	echo 'net.ipv4.tcp_mem = 16384 262144 134217728' >> /etc/sysctl.d/99-perf.conf
+	echo 'net.ipv4.tcp_rmem = 16384 262144 134217728' >> /etc/sysctl.d/99-perf.conf
+	echo 'net.ipv4.tcp_wmem = 16384 262144 134217728' >> /etc/sysctl.d/99-perf.conf
+	echo 'net.ipv4.udp_mem = 16384 262144 134217728' >> /etc/sysctl.d/99-perf.conf
+	echo 'net.ipv4.udp_rmem_min = 16384' >> /etc/sysctl.d/99-perf.conf
+	echo 'net.ipv4.udp_wmem_min = 16384' >> /etc/sysctl.d/99-perf.conf
 
 	sysctl -q --system > /dev/null 2>&1
 
