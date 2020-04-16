@@ -41,8 +41,8 @@ checkUser
 
 function installSystem() {
 
-	# echo -n "▋"
-	# yum -q -y update > /dev/null 2>&1
+	echo -n "▋"
+	yum -q -y update > /dev/null 2>&1
 
 	echo -n "▋"
 	yum -q -y install epel-release elrepo-release > /dev/null 2>&1
