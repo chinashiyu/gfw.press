@@ -42,16 +42,24 @@ checkUser
 function installSystem() {
 
 	echo -n "▋"
+	yum -q -y install epel-release > /dev/null 2>&1
+
+	echo -n "▋"
+	yum -q -y install elrepo-release > /dev/null 2>&1
+
+	echo -n "▋"
+	yum -q -y config-manager --set-enabled PowerTools > /dev/null 2>&1
+
+	echo -n "▋"
 	yum -q -y update > /dev/null 2>&1
 
 	echo -n "▋"
-	yum -q -y install epel-release elrepo-release > /dev/null 2>&1
+	yum -q -y install wget iptraf-ng net-tools bind-utils langpacks-zh_CN pwgen tuned firewalld > /dev/null 2>&1
 
 	# echo -n "▋"
-	# yum -q -y config-manager --set-enabled PowerTools > /dev/null 2>&1
-
-	echo -n "▋"
-	yum -q -y install wget iptraf-ng net-tools bind-utils langpacks-zh_CN pwgen tuned firewalld > /dev/null 2>&1
+	# yum -q -y  config-manager --enable elrepo-kernel > /dev/null 2>&1
+	# yum -q -y install kernel-ml-* --allowerasing > /dev/null 2>&1
+	# grub2-set-default 0 > /dev/null 2>&1
 
 }
 
@@ -91,6 +99,7 @@ function setupSystem() {
 	echo 'vm.swappiness = 10' >> /etc/sysctl.d/99-perf.conf
 	echo 'net.ipv4.tcp_congestion_control = bbr' >> /etc/sysctl.d/99-perf.conf
 	echo 'net.core.default_qdisc = fq' >> /etc/sysctl.d/99-perf.conf
+	echo 'net.ipv4.tcp_fastopen = 3' >> /etc/sysctl.d/99-perf.conf
 	echo 'net.ipv4.ip_forward = 1' > /etc/sysctl.d/99-perf.conf
 	echo 'net.core.somaxconn = 4096' >> /etc/sysctl.d/99-perf.conf
 	echo 'net.core.netdev_max_backlog = 1048576' >> /etc/sysctl.d/99-perf.conf
@@ -226,11 +235,27 @@ function removeSoftware() {
 
 function echoHelp() {
 
-        echo "恭喜你！已成功安装并启动翻墙大杀器服务"
-        echo
-        echo "查看端口密码请执行 cat /gfw.press/user.txt "
-        echo
-        echo "重新启动服务请执行 /gfw.press/server.sh "
+	if [ -e $SOFTWRE_HOME/user.txt ]; then
+
+		echo "恭喜你！已成功安装并启动翻墙大杀器服务"
+		echo
+		echo "节点地址："
+		echo $(dig TXT +short o-o.myaddr.l.google.com @ns1.google.com | tr -d '"*[:space:]*')
+		echo
+		echo "节点端口和连接密码："
+		tail -n 6 $SOFTWRE_HOME/user.txt
+		echo
+		echo "查看全部端口请执行 cat $SOFTWRE_HOME/user.txt "
+		echo
+		echo "重新启动服务请执行 $SOFTWRE_HOME/server.sh "
+
+	fi
+
+	if [ ! -e $SOFTWRE_HOME/user.txt ]; then
+
+		echo "安装出错！请重新安装"
+
+	fi
 
 }
 
