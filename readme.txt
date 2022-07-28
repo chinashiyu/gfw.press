@@ -8,7 +8,7 @@
 
 第一步、安装服务器
 
-购买一个 5 美元的  Ubuntu 19 / 20 、 Debian 10 或者 FreeBSD 12 云服务器
+购买一个 5 美元的  Ubuntu 19 / 20 云服务器
 
 购买地址 https://www.vultr.com/?ref=7115062
 
@@ -19,14 +19,6 @@ Server Location 选择 Seoul；Additional Features 不选择 Enable IPv6
 # Ubuntu 19 / 20 使用
 
 apt -y -q install wget ; wget -q -O gfw https://raw.githubusercontent.com/chinashiyu/gfw.press/master/ubuntu.sh.txt ; sh gfw
-
-# FreeBSD 12 使用
-
-pkg install -y wget ; wget -q -O gfw https://raw.githubusercontent.com/chinashiyu/gfw.press/master/freebsd.sh.txt ; sh gfw
-
-# Debian 10 使用
-
-apt -y -q install wget ; wget -q -O gfw https://raw.githubusercontent.com/chinashiyu/gfw.press/master/debian.sh.txt ; sh gfw
 
 
 第二步、安装客户端
