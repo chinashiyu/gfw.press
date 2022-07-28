@@ -8,7 +8,7 @@
 
 第一步、安装服务器
 
-购买一个 5 美元的 CentOS 8 、 Ubuntu 19 、 Debian 10 或者 FreeBSD 12 云服务器
+购买一个 5 美元的  Ubuntu 19 / 20 、 Debian 10 或者 FreeBSD 12 云服务器
 
 购买地址 https://www.vultr.com/?ref=7115062
 
