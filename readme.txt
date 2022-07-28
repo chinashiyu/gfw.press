@@ -12,13 +12,11 @@
 
 购买地址 https://www.vultr.com/?ref=7115062
 
+Server Location 选择 Seoul；Additional Features 不选择 Enable IPv6
+
 然后执行一键安装命令：
 
-# CentOS 8 使用
-
-yum install wget -y -q ; wget -q -O gfw https://raw.githubusercontent.com/chinashiyu/gfw.press/master/vultr_centos8.sh.txt ; sh gfw
-
-# Ubuntu 19 使用
+# Ubuntu 19 / 20 使用
 
 apt -y -q install wget ; wget -q -O gfw https://raw.githubusercontent.com/chinashiyu/gfw.press/master/ubuntu.sh.txt ; sh gfw
 
