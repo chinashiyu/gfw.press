@@ -26,7 +26,7 @@ apt -y -q upgrade  > /dev/null 2>&1 ;
 
 # 安装软件
 echo -n ▋▋  ;
-apt -y -q install  wget openjdk-13-jdk pwgen git squid net-tools language-pack-zh-hans tuned athena-jot > /dev/null 2>&1 ;
+apt -y -q install  wget openjdk-11-jdk pwgen git squid net-tools language-pack-zh-hans tuned athena-jot > /dev/null 2>&1 ;
 
 
 # 设置语言环境
