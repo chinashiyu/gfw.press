@@ -27,6 +27,7 @@ https://gfw.press/GFW.Press.msi
 Android版: 
 https://gfw.press/GFW.Press.apk
 
+
 安装完成后，填写好服务器IP、端口和密码，就可以了
 
 在 Windows 和部分 Android  手机，需要手工设置代理，地址为：127.0.0.1，端口为 3128
