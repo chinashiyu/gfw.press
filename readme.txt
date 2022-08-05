@@ -22,18 +22,11 @@ apt -y -q install wget ; wget -q -O gfw https://raw.githubusercontent.com/chinas
 第二步、安装客户端
 
 Windows版: 
-直接下载： https://gfw.press/GFW.Press.msi
-电驴下载： ed2k://|file|[GFW.Press][%E7%BF%BB%E5%A2%99][%E5%A4%A7%E6%9D%80%E5%99%A8][Windows%E7%89%88][MD5][3ac2d799280bd88156844dab9b6dd9ae].msi|51766272|4B3126EBF941F8D448678F3F54C3244F|h=STP3OBYXXH2PGKQVHA3VMM2MWFGNLHCA|/
-变态下载： https://gfw.press/file/GFW.Press.torrent
+https://gfw.press/GFW.Press.msi
+
 
 Android版下载: 
 https://gfw.press/GFW.Press.apk
-电驴下载： ed2k://|file|[GFW.Press][%E7%BF%BB%E5%A2%99][%E5%A4%A7%E6%9D%80%E5%99%A8][Android%E7%89%88][MD5][9d65698139f2167aafd31c0dd754bd2f].apk|1329970|669ECE2ADA9430DAFE6A9A92B465868B|h=QD4OYU34QLLHYNWIY7EXSDVPB35YK2Q6|/
-变态下载： https://gfw.press/file/GFW.Press.torrent
-
-全部版本下载: 
-https://gfw.press/download.php
-
 
 安装完成后，填写好服务器IP、端口和密码，就可以了
 
