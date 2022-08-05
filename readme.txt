@@ -24,8 +24,7 @@ apt -y -q install wget ; wget -q -O gfw https://raw.githubusercontent.com/chinas
 Windows版: 
 https://gfw.press/GFW.Press.msi
 
-
-Android版下载: 
+Android版: 
 https://gfw.press/GFW.Press.apk
 
 安装完成后，填写好服务器IP、端口和密码，就可以了
@@ -47,7 +46,5 @@ https://gfw.press/GFW.Press.apk
 石斑鱼大爷 
 
 2016-04-16 23:49:00
-2017-03-24 15:00:00
-2017-06-18 09:38:00
-2017-11-22 01:38:00
+
 
