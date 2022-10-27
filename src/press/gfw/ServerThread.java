@@ -1,5 +1,5 @@
 /**
-* 
+*
 *    GFW.Press
 *    Copyright (C) 2016  chinashiyu ( chinashiyu@gfw.press ; http://gfw.press )
 *
@@ -15,22 +15,25 @@
 *
 *    You should have received a copy of the GNU General Public License
 *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*    
+*
 **/
 package press.gfw;
 
+import java.io.Closeable;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.sql.Timestamp;
 
 import javax.crypto.SecretKey;
+import javax.net.SocketFactory;
 
 /**
- * 
+ *
  * GFW.Press服务器线程
- * 
+ *
  * @author chinashiyu ( chinashiyu@gfw.press ; http://gfw.press )
  *
  */
@@ -46,7 +49,15 @@ public class ServerThread extends PointThread {
 
 	private SecretKey key = null;
 
-	private boolean forwarding = false;
+	private int overN = 0;
+
+	private InputStream clientIn = null;
+
+	private OutputStream clientOut = null;
+
+	private InputStream proxyIn = null;
+
+	private OutputStream proxyOut = null;
 
 	public ServerThread(Socket clientSocket, String proxyHost, int proxyPort, SecretKey key) {
 
@@ -61,8 +72,59 @@ public class ServerThread extends PointThread {
 	}
 
 	/**
+	 * 暂停
+	 *
+	 * @param m
+	 */
+	private void _sleep(long m) {
+
+		try {
+
+			sleep(m);
+
+		} catch (InterruptedException ie) {
+
+		}
+
+	}
+
+	private void close() {
+
+		close(clientIn);
+
+		close(proxyOut);
+
+		close(proxyIn);
+
+		close(clientOut);
+
+		close(clientSocket);
+
+		close(proxySocket);
+
+	}
+
+	private void close(Closeable o) {
+
+		if (o == null) {
+
+			return;
+
+		}
+
+		try {
+
+			o.close();
+
+		} catch (IOException e) {
+
+		}
+
+	}
+
+	/**
 	 * 打印信息
-	 * 
+	 *
 	 * @param o
 	 */
 	private void log(Object o) {
@@ -73,56 +135,42 @@ public class ServerThread extends PointThread {
 
 	}
 
-	/**
-	 * 关闭所有连接，此线程及转发子线程调用
-	 */
+	@Override
 	public synchronized void over() {
 
-		try {
+		overN++;
 
-			proxySocket.close();
+		if (overN < 2) {
 
-		} catch (Exception e) {
-
-		}
-
-		try {
-
-			clientSocket.close();
-
-		} catch (Exception e) {
+			return;
 
 		}
 
-		if (forwarding) {
+		_sleep(OVER_TIMEOUT);
 
-			forwarding = false;
-
-		}
+		close();
 
 	}
 
 	/**
 	 * 启动服务器与客户端之间的转发线程，并对数据进行加密及解密
 	 */
+	@Override
+	@SuppressWarnings("preview")
 	public void run() {
-
-		InputStream clientIn = null;
-
-		OutputStream clientOut = null;
-
-		InputStream proxyIn = null;
-
-		OutputStream proxyOut = null;
 
 		try {
 
 			// 连接代理服务器
-			proxySocket = new Socket(proxyHost, proxyPort);
+			proxySocket = SocketFactory.getDefault().createSocket();
 
-			// 设置3分钟超时
-			proxySocket.setSoTimeout(180000);
-			clientSocket.setSoTimeout(180000);
+			proxySocket.connect(new InetSocketAddress(proxyHost, proxyPort), CONN_TIMEOUT);
+
+			proxySocket.setSoTimeout(SOCK_TIMEOUT);
+			clientSocket.setSoTimeout(SOCK_TIMEOUT);
+
+			proxySocket.setTcpNoDelay(true);
+			clientSocket.setTcpNoDelay(true);
 
 			// 打开 keep-alive
 			proxySocket.setKeepAlive(true);
@@ -139,19 +187,18 @@ public class ServerThread extends PointThread {
 
 			log("连接代理服务器出错：" + proxyHost + ":" + proxyPort);
 
-			over();
+			close();
 
 			return;
 
 		}
 
-		// 开始转发
-		forwarding = true;
-
 		DecryptForwardThread forwardProxy = new DecryptForwardThread(this, clientIn, proxyOut, key);
+		// startVirtualThread(forwardProxy);
 		forwardProxy.start();
 
 		EncryptForwardThread forwardClient = new EncryptForwardThread(this, proxyIn, clientOut, key);
+		// startVirtualThread(forwardClient);
 		forwardClient.start();
 
 	}

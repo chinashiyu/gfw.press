@@ -1,5 +1,5 @@
 /**
-* 
+*
 *    GFW.Press
 *    Copyright (C) 2016  chinashiyu ( chinashiyu@gfw.press ; http://gfw.press )
 *
@@ -15,7 +15,7 @@
 *
 *    You should have received a copy of the GNU General Public License
 *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*    
+*
 **/
 package press.gfw;
 
@@ -26,11 +26,12 @@ import java.net.Socket;
 import java.sql.Timestamp;
 
 import javax.crypto.SecretKey;
+import javax.net.ServerSocketFactory;
 
 /**
- * 
+ *
  * GFW.Press客户端
- * 
+ *
  * @author chinashiyu ( chinashiyu@gfw.press ; http://gfw.press )
  *
  */
@@ -164,7 +165,7 @@ public class Client extends Thread {
 
 	/**
 	 * 打印信息
-	 * 
+	 *
 	 * @param o
 	 */
 	@SuppressWarnings("unused")
@@ -178,9 +179,11 @@ public class Client extends Thread {
 
 	/**
 	 * 启动客户端
-	 * 
+	 *
 	 * @return
 	 */
+	@Override
+	@SuppressWarnings("preview")
 	public void run() {
 
 		if (serverHost == null || (serverHost = serverHost.trim()).length() == 0 || serverPort == 0 || listenPort == 0 || key == null) {
@@ -197,7 +200,7 @@ public class Client extends Thread {
 
 		try {
 
-			listenSocket = new ServerSocket(listenPort);
+			listenSocket = ServerSocketFactory.getDefault().createServerSocket(listenPort);
 
 		} catch (IOException ex) {
 
@@ -259,6 +262,7 @@ public class Client extends Thread {
 
 			ClientThread clientThread = new ClientThread(agentSocket, serverHost, serverPort, key);
 
+			// startVirtualThread(clientThread);
 			clientThread.start();
 
 		}

@@ -1,5 +1,5 @@
 /**
-* 
+*
 *    GFW.Press
 *    Copyright (C) 2016  chinashiyu ( chinashiyu@gfw.press ; http://gfw.press )
 *
@@ -15,7 +15,7 @@
 *
 *    You should have received a copy of the GNU General Public License
 *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*    
+*
 **/
 package press.gfw;
 
@@ -49,7 +49,7 @@ import org.apache.commons.codec.digest.DigestUtils;
 
 /**
  * GFW.Press加密及解密管理
- * 
+ *
  * @author chinashiyu ( chinashiyu@gfw.press ; http://gfw.press )
  *
  */
@@ -107,15 +107,12 @@ public class Encrypt {
 
 	/**
 	 * 解密
-	 * 
-	 * @param key
-	 *          SecretKey
-	 * @param encrypt_bytes
-	 *          头部包含16字节IV的加密数据
-	 * 
-	 * @return
-	 * 				解密数据
-	 * 
+	 *
+	 * @param key           SecretKey
+	 * @param encrypt_bytes 头部包含16字节IV的加密数据
+	 *
+	 * @return 解密数据
+	 *
 	 */
 	public byte[] decrypt(SecretKey key, byte[] encrypt_bytes) {
 
@@ -139,17 +136,13 @@ public class Encrypt {
 
 	/**
 	 * 解密
-	 * 
-	 * @param key
-	 *          SecretKey
-	 * @param cipher_data
-	 *          加密数据
-	 * @param IV
-	 *          IV
-	 * 
-	 * @return
-	 * 				解密数据
-	 * 
+	 *
+	 * @param key         SecretKey
+	 * @param cipher_data 加密数据
+	 * @param IV          IV
+	 *
+	 * @return 解密数据
+	 *
 	 */
 	public byte[] decrypt(SecretKey key, byte[] cipher_data, byte[] IV) {
 
@@ -193,15 +186,11 @@ public class Encrypt {
 
 	/**
 	 * 解密文件
-	 * 
-	 * @param key
-	 *          SecretKey
-	 * @param src
-	 *          加密的文件
-	 * @param dest
-	 *          解密后的文件
-	 * @return
-	 * 				解密是否成功
+	 *
+	 * @param key  SecretKey
+	 * @param src  加密的文件
+	 * @param dest 解密后的文件
+	 * @return 解密是否成功
 	 */
 	public boolean decryptFile(SecretKey key, File src, File dest) {
 
@@ -359,15 +348,12 @@ public class Encrypt {
 
 	/**
 	 * 加密
-	 * 
-	 * @param key
-	 *          SecretKey
-	 * @param data
-	 *          数据
-	 * 
-	 * @return
-	 * 				加密数据
-	 * 
+	 *
+	 * @param key  SecretKey
+	 * @param data 数据
+	 *
+	 * @return 加密数据
+	 *
 	 */
 	public byte[] encrypt(SecretKey key, byte[] data) {
 
@@ -423,17 +409,13 @@ public class Encrypt {
 
 	/**
 	 * 加密文件
-	 * 
-	 * @param key
-	 *          SecretKey
-	 * @param src
-	 *          原文件
-	 * @param dest
-	 *          加密文件
-	 * 
-	 * @return
-	 * 				加密是否成功
-	 * 
+	 *
+	 * @param key  SecretKey
+	 * @param src  原文件
+	 * @param dest 加密文件
+	 *
+	 * @return 加密是否成功
+	 *
 	 */
 	public boolean encryptFile(SecretKey key, File src, File dest) {
 
@@ -567,20 +549,18 @@ public class Encrypt {
 
 	/**
 	 * 加密网络数据
-	 * 
-	 * @param key
-	 *          SecretKey
-	 * 
-	 * @param bytes
-	 *          原始数据
-	 * 
-	 * @return
-	 * 				[加密数据+噪音数据]长度值的加密数据 + [加密数据 + 噪音数据]
-	 * 
+	 *
+	 * @param key   SecretKey
+	 *
+	 * @param bytes 原始数据
+	 *
+	 * @return [加密数据+噪音数据]长度值的加密数据 + [加密数据 + 噪音数据]
+	 *
 	 */
 	public byte[] encryptNet(SecretKey key, byte[] bytes) {
 
-		if (key == null || bytes == null || bytes.length == 0) {
+		// if (key == null || bytes == null || bytes.length == 0) {
+		if (key == null || bytes == null) {
 
 			return null;
 
@@ -669,13 +649,11 @@ public class Encrypt {
 
 	/**
 	 * 还原块长度值
-	 * 
-	 * @param bytes
-	 *          块长度字节数组
-	 * 
-	 * @return
-	 * 				块长度值
-	 * 
+	 *
+	 * @param bytes 块长度字节数组
+	 *
+	 * @return 块长度值
+	 *
 	 */
 	public int getBlockSize(byte[] bytes) {
 
@@ -709,11 +687,9 @@ public class Encrypt {
 
 	/**
 	 * 生成块长度值的字节数组
-	 * 
-	 * @param size
-	 *          块长度
-	 * @return
-	 * 				块长度值字节数组
+	 *
+	 * @param size 块长度
+	 * @return 块长度值字节数组
 	 */
 	public byte[] getBlockSizeBytes(int size) {
 
@@ -733,15 +709,12 @@ public class Encrypt {
 
 	/**
 	 * 块长度值转换为字节数组
-	 * 
-	 * @param size
-	 *          加密后的数据块总长度值
-	 * 
-	 * @param noise_size
-	 *          加密前的噪音数据块长度值
-	 * 
-	 * @return
-	 * 				块长度值字节数组
+	 *
+	 * @param size       加密后的数据块总长度值
+	 *
+	 * @param noise_size 加密前的噪音数据块长度值
+	 *
+	 * @return 块长度值字节数组
 	 */
 	public byte[] getBlockSizeBytes(int data_size, int noise_size) {
 
@@ -761,9 +734,8 @@ public class Encrypt {
 
 	/**
 	 * 从字节数组还原块长度值
-	 * 
-	 * @param bytes
-	 *          长度值字节数组，格式 %08d,%05d
+	 *
+	 * @param bytes 长度值字节数组，格式 %08d,%05d
 	 * @return int[2]
 	 */
 	public int[] getBlockSizes(byte[] bytes) {
@@ -800,10 +772,9 @@ public class Encrypt {
 
 	/**
 	 * 生成256位SecretKey
-	 * 
-	 * @return
-	 * 				256位SecretKey
-	 * 
+	 *
+	 * @return 256位SecretKey
+	 *
 	 */
 	public SecretKey getKey() {
 
@@ -813,13 +784,11 @@ public class Encrypt {
 
 	/**
 	 * 生成指定加密位数的AES SecretKey
-	 * 
-	 * @param bits
-	 *          加密位数
-	 * 
-	 * @return
-	 * 				SecretKey
-	 * 
+	 *
+	 * @param bits 加密位数
+	 *
+	 * @return SecretKey
+	 *
 	 */
 	public SecretKey getKey(int bits) {
 
@@ -849,13 +818,11 @@ public class Encrypt {
 
 	/**
 	 * 使用密码生成SecretKey
-	 * 
-	 * @param password
-	 *          密码，必须符合isPassword()要求的标准
-	 * 
-	 * @return
-	 * 				SecretKey
-	 * 
+	 *
+	 * @param password 密码，必须符合isPassword()要求的标准
+	 *
+	 * @return SecretKey
+	 *
 	 */
 	public SecretKey getPasswordKey(String password) {
 
@@ -883,13 +850,11 @@ public class Encrypt {
 
 	/**
 	 * 使用SecretKey字符串还原SecretKey
-	 * 
-	 * @param stringKey
-	 *          SecretKey字符串
-	 * 
-	 * @return
-	 * 				SecretKey
-	 * 
+	 *
+	 * @param stringKey SecretKey字符串
+	 *
+	 * @return SecretKey
+	 *
 	 */
 	public SecretKey getSecretKey(String stringKey) {
 
@@ -907,9 +872,8 @@ public class Encrypt {
 
 	/**
 	 * 生成指定长度的SecureRandom
-	 * 
-	 * @param size
-	 *          指定长度
+	 *
+	 * @param size 指定长度
 	 * @return
 	 */
 	public byte[] getSecureRandom(int size) {
@@ -924,13 +888,11 @@ public class Encrypt {
 
 	/**
 	 * 获取SecretKey的字符串
-	 * 
-	 * @param secretKey
-	 *          SecretKey
-	 * 
-	 * @return
-	 * 				SecretKey的字符串
-	 * 
+	 *
+	 * @param secretKey SecretKey
+	 *
+	 * @return SecretKey的字符串
+	 *
 	 */
 	public String getStringKey(SecretKey secretKey) {
 
@@ -946,13 +908,9 @@ public class Encrypt {
 
 	/**
 	 * 检查密码是否合格
-	 * 
-	 * 1、长度至少为八个字符
-	 * 2、至少包含一个数字
-	 * 3、至少包含一个大写字母
-	 * 4、至少包含一个小写字母
-	 * 5、不得包含空格
-	 * 
+	 *
+	 * 1、长度至少为八个字符 2、至少包含一个数字 3、至少包含一个大写字母 4、至少包含一个小写字母 5、不得包含空格
+	 *
 	 * @param password
 	 * @return
 	 */
@@ -967,18 +925,16 @@ public class Encrypt {
 		return true;
 
 		/*
-		 * 2、至少包含一个数字
-		 * 3、至少包含一个大写字母
-		 * 4、至少包含一个小写字母
-		 * 5、不得包含空格
+		 * 2、至少包含一个数字 3、至少包含一个大写字母 4、至少包含一个小写字母 5、不得包含空格
 		 */
-		// return password.matches("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\\S+$).{8,}$");
+		// return
+		// password.matches("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\\S+$).{8,}$");
 
 	}
 
 	/**
 	 * 打印信息
-	 * 
+	 *
 	 * @param o
 	 */
 	private void log(Object o) {

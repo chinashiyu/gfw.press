@@ -1,5 +1,5 @@
 /**
-* 
+*
 *    GFW.Press
 *    Copyright (C) 2016  chinashiyu ( chinashiyu@gfw.press ; http://gfw.press )
 *
@@ -15,18 +15,24 @@
 *
 *    You should have received a copy of the GNU General Public License
 *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*    
+*
 **/
 package press.gfw;
 
 /**
- * 
+ *
  * GFW.Press客户端/服务器线程父类
- * 
+ *
  * @author chinashiyu ( chinashiyu@gfw.press ; http://gfw.press )
  *
  */
 public class PointThread extends Thread {
+
+	public static final int CONN_TIMEOUT = 3000;
+
+	public static final int SOCK_TIMEOUT = 3000;
+
+	public final static int OVER_TIMEOUT = 300;
 
 	/**
 	 * 关闭所有连接，此线程及转发子线程调用

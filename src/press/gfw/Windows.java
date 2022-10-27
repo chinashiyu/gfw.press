@@ -1,5 +1,5 @@
 /**
-* 
+*
 *    GFW.Press
 *    Copyright (C) 2016  chinashiyu ( chinashiyu@gfw.press ; http://gfw.press )
 *
@@ -15,7 +15,7 @@
 *
 *    You should have received a copy of the GNU General Public License
 *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*    
+*
 **/
 package press.gfw;
 
@@ -44,9 +44,9 @@ import javax.swing.JTextField;
 import org.json.simple.JSONObject;
 
 /**
- * 
+ *
  * GFW.Press客户端图形界面
- * 
+ *
  * @author chinashiyu ( chinashiyu@gfw.press ; http://gfw.press )
  *
  */
@@ -70,91 +70,91 @@ public class Windows extends JFrame {
 
 			switch (command) {
 
-				case "退出":
+			case "退出":
 
-					setVisible(false);
+				setVisible(false);
 
-					if (tray != null && icon != null) {
+				if (tray != null && icon != null) {
 
-						tray.remove(icon);
+					tray.remove(icon);
 
-					}
+				}
 
-					System.exit(0);
+				System.exit(0);
 
-					break;
+				break;
 
-				case "确定":
+			case "确定":
 
-					setVisible(false);
+				setVisible(false);
 
-					boolean edit = false;
+				boolean edit = false;
 
-					if (!serverHost.equals(serverHostField.getText().trim())) {
+				if (!serverHost.equals(serverHostField.getText().trim())) {
 
-						serverHost = serverHostField.getText().trim();
+					serverHost = serverHostField.getText().trim();
 
-						edit = true;
+					edit = true;
 
-					}
+				}
 
-					if (!serverPort.equals(serverPortField.getText().trim())) {
+				if (!serverPort.equals(serverPortField.getText().trim())) {
 
-						serverPort = serverPortField.getText().trim();
+					serverPort = serverPortField.getText().trim();
 
-						edit = true;
+					edit = true;
 
-					}
+				}
 
-					String _password = new String(passwordField.getPassword()).trim();
+				String _password = new String(passwordField.getPassword()).trim();
 
-					if (!password.equals(_password)) {
+				if (!password.equals(_password)) {
 
-						password = _password;
+					password = _password;
 
-						edit = true;
+					edit = true;
 
-					}
+				}
 
-					// if (!AES256CFB.isPassword(password)) {
+				// if (!AES256CFB.isPassword(password)) {
 
-					// passwordField.setBackground(Color.ORANGE);
+				// passwordField.setBackground(Color.ORANGE);
 
-					// passwordField.setToolTipText("密码需包含大小写字母和数字，至少八个字符。");
+				// passwordField.setToolTipText("密码需包含大小写字母和数字，至少八个字符。");
 
-					// }
+				// }
 
-					if (!proxyPort.equals(proxyPortField.getText().trim())) {
+				if (!proxyPort.equals(proxyPortField.getText().trim())) {
 
-						proxyPort = proxyPortField.getText().trim();
+					proxyPort = proxyPortField.getText().trim();
 
-						edit = true;
+					edit = true;
 
-					}
+				}
 
-					if (edit) {
+				if (edit) {
 
-						saveConfig();
+					saveConfig();
 
-					}
+				}
 
-					start();
+				start();
 
-					break;
+				break;
 
-				case "取消":
+			case "取消":
 
-					setVisible(false);
+				setVisible(false);
 
-					serverHostField.setText(serverHost);
+				serverHostField.setText(serverHost);
 
-					serverPortField.setText(serverPort);
+				serverPortField.setText(serverPort);
 
-					passwordField.setText(password);
+				passwordField.setText(password);
 
-					proxyPortField.setText(proxyPort);
+				proxyPortField.setText(proxyPort);
 
-					break;
+				break;
 
 			}
 
@@ -441,7 +441,7 @@ public class Windows extends JFrame {
 
 	/**
 	 * 打印信息
-	 * 
+	 *
 	 * @param o
 	 */
 	private void log(Object o) {
@@ -469,6 +469,7 @@ public class Windows extends JFrame {
 
 	}
 
+	@SuppressWarnings("preview")
 	public void start() {
 
 		if (client != null && !client.isKill()) {
@@ -487,9 +488,8 @@ public class Windows extends JFrame {
 
 		client = new Client(serverHost, serverPort, password, proxyPort);
 
+		// Thread.startVirtualThread(client);
 		client.start();
-
-		// log(client.getName());
 
 	}
 

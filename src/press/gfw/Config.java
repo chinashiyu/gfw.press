@@ -1,5 +1,5 @@
 /**
-* 
+*
 *    GFW.Press
 *    Copyright (C) 2016  chinashiyu ( chinashiyu@gfw.press ; http://gfw.press )
 *
@@ -15,7 +15,7 @@
 *
 *    You should have received a copy of the GNU General Public License
 *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*    
+*
 **/
 package press.gfw;
 
@@ -33,7 +33,7 @@ import org.json.simple.parser.ParseException;
 
 /**
  * GFW.Press配置文件管理
- * 
+ *
  * @author chinashiyu ( chinashiyu@gfw.press ; http://gfw.press )
  *
  */
@@ -71,7 +71,7 @@ public class Config {
 
 	/**
 	 * 获取客户端配置文件
-	 * 
+	 *
 	 * @return
 	 */
 	public JSONObject getClientConfig() {
@@ -82,7 +82,7 @@ public class Config {
 
 	/**
 	 * 字符串转JSON对象
-	 * 
+	 *
 	 * @param data
 	 * @return
 	 */
@@ -114,7 +114,7 @@ public class Config {
 
 	/**
 	 * 获取服务器配置
-	 * 
+	 *
 	 * @return
 	 */
 	public JSONObject getServerConfig() {
@@ -151,11 +151,11 @@ public class Config {
 
 		}
 
-		Hashtable<String, String> users = new Hashtable<String, String>(lines.length);
+		Hashtable<String, String> users = new Hashtable<>(lines.length);
 
-		for (int i = 0; i < lines.length; i++) {
+		for (String line : lines) {
 
-			String[] cols = lines[i].trim().split(" ");
+			String[] cols = line.trim().split(" ");
 
 			if (cols == null || cols.length < 2 || !(cols[0] = cols[0].trim()).matches("\\d+") || (cols[cols.length - 1] = cols[cols.length - 1].trim()).length() < 8) {
 
@@ -173,7 +173,7 @@ public class Config {
 
 	/**
 	 * 打印信息
-	 * 
+	 *
 	 * @param o
 	 */
 	private void log(Object o) {
@@ -186,7 +186,7 @@ public class Config {
 
 	/**
 	 * 读文件内容
-	 * 
+	 *
 	 * @param file
 	 * @return
 	 */
@@ -268,7 +268,7 @@ public class Config {
 
 	/**
 	 * 保存内容到文件
-	 * 
+	 *
 	 * @param file
 	 * @param text
 	 * @return
@@ -317,7 +317,7 @@ public class Config {
 
 	/**
 	 * 保存客户端配置文件
-	 * 
+	 *
 	 * @param json
 	 * @return
 	 */
@@ -348,7 +348,7 @@ public class Config {
 
 	/**
 	 * 保存服务器配置文件
-	 * 
+	 *
 	 * @param json
 	 * @return
 	 */

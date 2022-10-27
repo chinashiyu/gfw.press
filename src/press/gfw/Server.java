@@ -1,5 +1,5 @@
 /**
-* 
+*
 *    GFW.Press
 *    Copyright (C) 2016  chinashiyu ( chinashiyu@gfw.press ; http://gfw.press )
 *
@@ -15,7 +15,7 @@
 *
 *    You should have received a copy of the GNU General Public License
 *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*    
+*
 **/
 package press.gfw;
 
@@ -28,13 +28,14 @@ import java.util.Enumeration;
 import java.util.Hashtable;
 
 import javax.crypto.SecretKey;
+import javax.net.ServerSocketFactory;
 
 import org.json.simple.JSONObject;
 
 /**
- * 
+ *
  * GFW.Press服务器
- * 
+ *
  * @author chinashiyu ( chinashiyu@gfw.press ; http://gfw.press )
  *
  */
@@ -83,7 +84,7 @@ public class Server extends Thread {
 
 	/**
 	 * 构造方法，用户线程
-	 * 
+	 *
 	 * @param proxyHost
 	 * @param proxyPort
 	 * @param listenPort
@@ -113,7 +114,7 @@ public class Server extends Thread {
 
 	/**
 	 * 构造方法，用户线程
-	 * 
+	 *
 	 * @param proxyHost
 	 * @param proxyPort
 	 * @param listenPort
@@ -127,7 +128,7 @@ public class Server extends Thread {
 
 	/**
 	 * 暂停
-	 * 
+	 *
 	 * @param m
 	 */
 	private void _sleep(long m) {
@@ -144,7 +145,7 @@ public class Server extends Thread {
 
 	/**
 	 * 获取密码
-	 * 
+	 *
 	 * @return
 	 */
 	public synchronized String getPassword() {
@@ -204,7 +205,7 @@ public class Server extends Thread {
 
 	/**
 	 * 打印信息
-	 * 
+	 *
 	 * @param o
 	 */
 	private void log(Object o) {
@@ -218,6 +219,8 @@ public class Server extends Thread {
 	/**
 	 * 用户线程
 	 */
+	@Override
+	@SuppressWarnings("preview")
 	public void run() {
 
 		// log("监听端口：" + listenPort);
@@ -234,7 +237,7 @@ public class Server extends Thread {
 
 		try {
 
-			serverSocket = new ServerSocket(listenPort);
+			serverSocket = ServerSocketFactory.getDefault().createServerSocket(listenPort);
 
 		} catch (IOException ex) {
 
@@ -282,6 +285,7 @@ public class Server extends Thread {
 
 			ServerThread serverThread = new ServerThread(clientSocket, proxyHost, proxyPort, key);
 
+			// startVirtualThread(serverThread);
 			serverThread.start();
 
 		}
@@ -307,6 +311,7 @@ public class Server extends Thread {
 	/**
 	 * 主线程
 	 */
+	@SuppressWarnings("preview")
 	public void service() {
 
 		if (System.currentTimeMillis() - lockFile.lastModified() < 30 * 1000L) {
@@ -337,7 +342,7 @@ public class Server extends Thread {
 
 		Hashtable<String, String> users = null; // 用户
 
-		Hashtable<String, Server> threads = new Hashtable<String, Server>(); // 用户线程
+		Hashtable<String, Server> threads = new Hashtable<>(); // 用户线程
 
 		while (true) {
 
@@ -383,6 +388,7 @@ public class Server extends Thread {
 
 						threads.put(threadPort, thread);
 
+						// startVirtualThread(thread);
 						thread.start();
 
 					}
@@ -401,6 +407,7 @@ public class Server extends Thread {
 
 				threads.put(userPort, thread);
 
+				// startVirtualThread(thread);
 				thread.start();
 
 			}
