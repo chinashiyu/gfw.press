@@ -12,7 +12,7 @@
 
 创建地址 https://www.vultr.com/?ref=7115062
 
-Server Location 选择 Seoul；Additional Features 不选择 Enable IPv6
+Server Location 选择 Seoul 或 Warsaw；Additional Features 不选择 Enable IPv6
 
 然后执行一键安装命令：
 
