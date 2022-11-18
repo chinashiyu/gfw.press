@@ -12,7 +12,7 @@ _java="java --enable-preview -Dfile.encoding=utf-8 -Dsun.jnu.encoding=utf-8 -Dus
 
 _pack="press.gfw"
 
-kill -9 `jps -l |grep $_pack.Server |awk '{print $1}'` > null 2>&1
+kill -9 `jps -l |grep $_pack.Server |awk '{print $1}'` > /dev/null 2>&1
 
 rm -f server.lock
 
