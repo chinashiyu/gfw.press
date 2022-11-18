@@ -1,4 +1,12 @@
+#!/bin/bash
+
 cd `dirname $0`
+
+export JAVA_HOME=./jdk
+
+export JRE_HOME=$JAVA_HOME
+
+export PATH=$JAVA_HOME/bin:$PATH
 
 _pack="press.gfw"
 
