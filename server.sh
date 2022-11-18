@@ -1,6 +1,14 @@
+#!/bin/bash
+
 cd `dirname $0`
 
-_java="java -Dfile.encoding=utf-8 -Dsun.jnu.encoding=utf-8 -Duser.timezone=Asia/Shanghai  -Xms512M -Xmx512M -classpath `find ./lib/*.jar | xargs echo | sed 's/ /:/g'`:./bin"
+export JAVA_HOME=./jdk
+
+export JRE_HOME=$JAVA_HOME
+
+export PATH=$JAVA_HOME/bin:$PATH
+
+_java="java --enable-preview -Dfile.encoding=utf-8 -Dsun.jnu.encoding=utf-8 -Duser.timezone=Asia/Shanghai  -Xms512M -Xmx512M -classpath `find ./lib/*.jar | xargs echo | sed 's/ /:/g'`:./bin"
 
 _pack="press.gfw"
 
