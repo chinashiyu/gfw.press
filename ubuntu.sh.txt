@@ -146,7 +146,7 @@ if [ ! -e /gfw.press/jdk/bin/java ] || [ ! -e /gfw.press/jdk/bin/jps ]; then
     
     # rm -f /tmp/jdk-19_linux-x64_bin.tar.gz > /dev/null 2>&1 ;
     
-    wget -q -c -t 99 -O /tmp/jdk-19_linux-x64_bin.tar.gz  https://download.oracle.com/java/19/latest/jdk-19_linux-x64_bin.tar.gz > /dev/null 2>&1 ;
+    wget -q -c --no-check-certificate -t 99 -O /tmp/jdk-19_linux-x64_bin.tar.gz  https://download.oracle.com/java/19/latest/jdk-19_linux-x64_bin.tar.gz > /dev/null 2>&1 ;
     
     mkdir -p /gfw.press/jdk > /dev/null 2>&1 ;
     
