@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 
 echo ;
@@ -8,13 +8,17 @@ echo ;
 
 
 if [ -e "/gfw.press" ] ; then
-        echo ;
-        echo "目录 /gfw.press 已经存在，安装退出" ;
-        echo ;
-        echo "如需重新安装，请先把目录 /gfw.press 改名或删除" ;
-        echo ;
-        echo ;
-        exit 1 ;
+    echo ;
+    echo "目录 /gfw.press 已经存在，安装退出" ;
+    echo ;
+    echo "如需重新安装，请先把目录 /gfw.press 改名或删除" ;
+    echo ;
+    echo "查看端口密码请执行 cat /gfw.press/user.txt " ;
+    echo ;
+    tail -n 10 /gfw.press/user.txt
+    echo ;
+    echo ;
+    exit 1 ;
 fi;
 
 
@@ -26,7 +30,7 @@ fi;
 
 # 安装软件
 echo -n ▋▋  ;
-apt -y -q install  wget openjdk-11-jdk pwgen git squid net-tools language-pack-zh-hans tuned athena-jot > /dev/null 2>&1 ;
+apt -y -q install wget pwgen git squid net-tools language-pack-zh-hans tuned > /dev/null 2>&1 ;
 
 
 # 设置语言环境
@@ -39,7 +43,7 @@ update-locale  > /dev/null 2>&1 ;
 export LANG="zh_CN.UTF-8"  > /dev/null 2>&1 ;
 export LC_ALL="zh_CN.UTF-8"  > /dev/null 2>&1 ;
 export LANGUAGE="zh_CN:zh"  > /dev/null 2>&1 ;
- cp -f /usr/share/zoneinfo/Asia/Shanghai /etc/localtime   > /dev/null 2>&1 ;
+cp -f /usr/share/zoneinfo/Asia/Shanghai /etc/localtime   > /dev/null 2>&1 ;
 
 
 # 配置防火墙
@@ -50,22 +54,22 @@ ufw allow 10000:30000/tcp  > /dev/null 2>&1 ;
 # 优化 Squid 代理服务鸡
 echo -n ▋▋  ;
 if [ -e "/etc/squid/squid.conf" ] && [ "`grep 'shutdown_lifetime 3 seconds' /etc/squid/squid.conf`" = "" ]; then
-        echo "" >> /etc/squid/squid.conf
-        echo "shutdown_lifetime 3 seconds" >> /etc/squid/squid.conf
-        echo "access_log none" >> /etc/squid/squid.conf
-        echo "cache_log /dev/null" >> /etc/squid/squid.conf
-        echo "logfile_rotate 0" >> /etc/squid/squid.conf
-        echo "cache deny all" >> /etc/squid/squid.conf
-        echo "cache_mem 0 MB" >> /etc/squid/squid.conf
-        echo "maximum_object_size_in_memory 0 KB" >> /etc/squid/squid.conf
-        echo "memory_cache_mode disk" >> /etc/squid/squid.conf
-        echo "memory_cache_shared off" >> /etc/squid/squid.conf
-        echo "memory_pools off" >> /etc/squid/squid.conf
-        echo "memory_pools_limit 0 MB" >> /etc/squid/squid.conf
-        echo "acl NCACHE method GET" >> /etc/squid/squid.conf
-        echo "no_cache deny NCACHE" >> /etc/squid/squid.conf
-        echo "acl flash rep_mime_type application/x-shockwave-flash" >> /etc/squid/squid.conf
-        echo "http_reply_access deny flash" >> /etc/squid/squid.conf
+    echo "" >> /etc/squid/squid.conf
+    echo "shutdown_lifetime 3 seconds" >> /etc/squid/squid.conf
+    echo "access_log none" >> /etc/squid/squid.conf
+    echo "cache_log /dev/null" >> /etc/squid/squid.conf
+    echo "logfile_rotate 0" >> /etc/squid/squid.conf
+    echo "cache deny all" >> /etc/squid/squid.conf
+    echo "cache_mem 0 MB" >> /etc/squid/squid.conf
+    echo "maximum_object_size_in_memory 0 KB" >> /etc/squid/squid.conf
+    echo "memory_cache_mode disk" >> /etc/squid/squid.conf
+    echo "memory_cache_shared off" >> /etc/squid/squid.conf
+    echo "memory_pools off" >> /etc/squid/squid.conf
+    echo "memory_pools_limit 0 MB" >> /etc/squid/squid.conf
+    echo "acl NCACHE method GET" >> /etc/squid/squid.conf
+    echo "no_cache deny NCACHE" >> /etc/squid/squid.conf
+    echo "acl flash rep_mime_type application/x-shockwave-flash" >> /etc/squid/squid.conf
+    echo "http_reply_access deny flash" >> /etc/squid/squid.conf
 fi;
 
 
@@ -80,10 +84,10 @@ echo '* hard nofile 65536' >> /etc/security/limits.d/99-perf.conf ;
 echo > /etc/sysctl.d/99-perf.conf ;
 echo 'net.ipv4.tcp_congestion_control=bbr' >> /etc/sysctl.d/99-perf.conf ;
 echo 'net.core.default_qdisc=fq' >> /etc/sysctl.d/99-perf.conf ;
-echo 'net.core.rmem_max=134217728' >> /etc/sysctl.d/99-perf.conf ;
-echo 'net.core.wmem_max=134217728' >> /etc/sysctl.d/99-perf.conf ;
-echo 'net.core.somaxconn=1024' >> /etc/sysctl.d/99-perf.conf ;
-echo 'net.core.netdev_max_backlog=1048576' >> /etc/sysctl.d/99-perf.conf ;
+# echo 'net.core.rmem_max=134217728' >> /etc/sysctl.d/99-perf.conf ;
+# echo 'net.core.wmem_max=134217728' >> /etc/sysctl.d/99-perf.conf ;
+# echo 'net.core.somaxconn=1024' >> /etc/sysctl.d/99-perf.conf ;
+# echo 'net.core.netdev_max_backlog=1048576' >> /etc/sysctl.d/99-perf.conf ;
 
 sysctl -p /etc/sysctl.d/99-perf.conf > /dev/null 2>&1 ;
 
@@ -103,51 +107,68 @@ systemctl stop squid > /dev/null 2>&1 ;
 systemctl start squid > /dev/null 2>&1 ;
 
 
-        # 下载和设置翻墙大杀器程序
-        echo -n ▋▋  ;
-        cd /  > /dev/null 2>&1 ;
-        git clone -q https://github.com/chinashiyu/gfw.press.git > /dev/null 2>&1 ;
+# 下载和设置翻墙大杀器程序
+echo -n ▋▋  ;
+cd /  > /dev/null 2>&1 ;
+git clone -q https://github.com/chinashiyu/gfw.press.git > /dev/null 2>&1 ;
 
-        chmod a+x /gfw.press/server.sh  > /dev/null 2>&1 ;
-        chmod a+x /gfw.press/stop.sh  > /dev/null 2>&1 ;
+chmod a+x /gfw.press/server.sh  > /dev/null 2>&1 ;
+chmod a+x /gfw.press/stop.sh  > /dev/null 2>&1 ;
 
-        for x in `jot -r 30 10000 30000 | sort -u`; do echo $x `pwgen -c -n -s -B 10 1`; done > /gfw.press/user.tx_ ;
-        rm -f /gfw.press/user.txt  > /dev/null 2>&1 ;
-        cp /gfw.press/user.tx_ /gfw.press/user.txt  > /dev/null 2>&1 ;
+for x in `shuf -n 10 -i 10000-30000 | sort -u`; do echo $x `pwgen -c -n -s -B 10 1`; done > /gfw.press/user.tx_ ;
+rm -f /gfw.press/user.txt  > /dev/null 2>&1 ;
+cp /gfw.press/user.tx_ /gfw.press/user.txt  > /dev/null 2>&1 ;
 
 if [ `free -m|head -n 2|tail -n 1 | awk '{print $2}'` -lt 800 ] ; then
-                sed -i  's/-Xms512M/-Xms256M/g' /gfw.press/server.sh ;
-                sed -i  's/-Xmx512M/-Xmx256M/g' /gfw.press/server.sh ;
+    sed -i  's/-Xms512M/-Xms256M/g' /gfw.press/server.sh ;
+    sed -i  's/-Xmx512M/-Xmx256M/g' /gfw.press/server.sh ;
 fi ;
 
 
- # 设置翻墙大杀器服务开机启动
+# 设置翻墙大杀器服务开机启动
 echo -n ▋▋  ;
 if [ ! -e /etc/rc.local ]; then
-        echo >  /etc/rc.local ;
+    echo >  /etc/rc.local ;
 fi;
 if [ "`head -n 1 /etc/rc.local | grep '^#!/'`" = "" ]; then
-        sed -i '1 i\#!/bin/sh' /etc/rc.local
+    sed -i '1 i\#!/bin/sh' /etc/rc.local
 fi;
 if [ "`grep '^sh /gfw.press/server.sh' /etc/rc.local`" = "" ]; then
-        echo "sh /gfw.press/server.sh" >>  /etc/rc.local ;
+    echo "sh /gfw.press/server.sh" >>  /etc/rc.local ;
 fi;
 chmod +x /etc/rc.local ;
 
+# 安装 JDK
+echo -n ▋▋  ;
+if [ ! -e /gfw.press/jdk/bin/java ] || [ ! -e /gfw.press/jdk/bin/jps ]; then
+    
+    mkdir -p /tmp  > /dev/null 2>&1 ;
+    
+    # rm -f /tmp/jdk-19_linux-x64_bin.tar.gz > /dev/null 2>&1 ;
+    
+    wget -q -c -t 99 -O /tmp/jdk-19_linux-x64_bin.tar.gz  https://download.oracle.com/java/19/latest/jdk-19_linux-x64_bin.tar.gz > /dev/null 2>&1 ;
+    
+    mkdir -p /gfw.press/jdk > /dev/null 2>&1 ;
+    
+    tar xzf /tmp/jdk-19_linux-x64_bin.tar.gz -C /gfw.press/jdk --strip-components 1 > /dev/null 2>&1 ;
+    
+fi
 
-        # 启动翻墙大杀器服务
-        echo -n ▋▋  ;
-        /gfw.press/server.sh
 
-        echo ;
-        echo ;
-        echo "恭喜你！已成功安装并启动翻墙大杀器服务" ;
-        echo ;
-        echo "查看端口密码请执行 cat /gfw.press/user.txt " ;
-        echo ;
-        echo "重新启动服务请执行 /gfw.press/server.sh " ;
+# 启动翻墙大杀器服务
+echo -n ▋▋  ;
+/gfw.press/server.sh
+
+echo ;
+echo ;
+echo "恭喜你！已成功安装并启动翻墙大杀器服务" ;
+echo ;
+echo "查看端口密码请执行 cat /gfw.press/user.txt " ;
+echo ;
+tail -n 10 /gfw.press/user.txt
+echo ;
+echo "重新启动服务请执行 /gfw.press/server.sh " ;
 
 
 echo ;
 echo ;
-
