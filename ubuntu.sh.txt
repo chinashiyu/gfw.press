@@ -115,7 +115,7 @@ git clone -q https://github.com/chinashiyu/gfw.press.git > /dev/null 2>&1 ;
 chmod a+x /gfw.press/server.sh  > /dev/null 2>&1 ;
 chmod a+x /gfw.press/stop.sh  > /dev/null 2>&1 ;
 
-for x in `shuf -n 10 -i 10000-30000 | sort -u`; do echo $x `pwgen -c -n -s -B 10 1`; done > /gfw.press/user.tx_ ;
+for x in `shuf -n 10 -i 10000-30000 | sort -u`; do echo $x $(echo `seq 48 57` `seq 65 90` `seq 97 122` | sed 's/ /\n/g' | shuf -n 10 | awk '{printf("%c",$1)}'); done > /gfw.press/user.tx_ ;
 rm -f /gfw.press/user.txt  > /dev/null 2>&1 ;
 cp /gfw.press/user.tx_ /gfw.press/user.txt  > /dev/null 2>&1 ;
 
